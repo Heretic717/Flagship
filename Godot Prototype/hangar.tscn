@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhk0cyf00pyqk"]
-
-[ext_resource type="Texture2D" uid="uid://jptvwbaqdu3f" path="res://textures/Hangar.png" id="1_cce4f"]
-
-[node name="Hangar" type="Sprite2D"]
-position = Vector2(556, 349)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_cce4f")

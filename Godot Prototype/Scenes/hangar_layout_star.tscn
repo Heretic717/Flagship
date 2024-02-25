@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://b5m633v10atcu"]
 
-[ext_resource type="PackedScene" uid="uid://bhk0cyf00pyqk" path="res://hangar.tscn" id="1_687dc"]
+[ext_resource type="PackedScene" uid="uid://bhk0cyf00pyqk" path="res://Scenes/hangar.tscn" id="1_687dc"]
+
 
 [node name="Hangar_Layout" type="Node2D"]
 

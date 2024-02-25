@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cppp45uaptw4w"]
 
-[ext_resource type="Script" path="res://projectile_logic.cs" id="1_f7bwv"]
+[ext_resource type="Script" path="res://Scripts/projectile_logic.cs" id="1_f7bwv"]
 [ext_resource type="Texture2D" uid="uid://c7urrd5xql8li" path="res://textures/Projectile.png" id="1_m727n"]
 
 [node name="Projectile" type="RigidBody2D"]

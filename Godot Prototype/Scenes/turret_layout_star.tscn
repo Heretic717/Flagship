@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://b78a40qelqvcs"]
 
-[ext_resource type="PackedScene" uid="uid://deahpmfxf4xou" path="res://turret.tscn" id="1_ap5fy"]
+[ext_resource type="PackedScene" uid="uid://deahpmfxf4xou" path="res://Scenes/turret.tscn" id="1_ap5fy"]
+
 
 [node name="Turret_Layout" type="Node2D"]
 

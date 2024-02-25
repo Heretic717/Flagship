@@ -1,9 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://btqll5avw72pl"]
 
-[ext_resource type="Script" path="res://Ship_move.cs" id="1_trj3n"]
-[ext_resource type="PackedScene" uid="uid://2wfedgqn20m" path="res://star_ship.tscn" id="1_w851l"]
-[ext_resource type="PackedScene" uid="uid://b5m633v10atcu" path="res://hangar_layout_star.tscn" id="3_e3unb"]
-[ext_resource type="PackedScene" uid="uid://b78a40qelqvcs" path="res://turret_layout_star.tscn" id="4_jautf"]
+[ext_resource type="Script" path="res://Scripts/Ship_move.cs" id="1_trj3n"]
+[ext_resource type="PackedScene" uid="uid://2wfedgqn20m" path="res://Scenes/star_ship.tscn" id="1_w851l"]
+[ext_resource type="PackedScene" uid="uid://b5m633v10atcu" path="res://Scenes/hangar_layout_star.tscn" id="3_e3unb"]
+[ext_resource type="PackedScene" uid="uid://b78a40qelqvcs" path="res://Scenes/turret_layout_star.tscn" id="4_jautf"]
+
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i7iqc"]
 radius = 41.3038

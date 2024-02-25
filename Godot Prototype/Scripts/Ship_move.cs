@@ -30,9 +30,14 @@ public partial class Ship_move : CharacterBody2D
 		velocity += acceleration * (float)delta;
 
 
+
+		if (Input.IsActionPressed("MovementUp") || Input.IsActionPressed("MovementDown") || Input.IsActionPressed("MovementLeft") || Input.IsActionPressed("MovementRight"))
+		{
+			ddp += accel; // accelerate if any movement key is pressed
+		}
 		
 		// calculate directional speed based on which key was pressed
-		if (Input.IsPhysicalKeyPressed(Key.W))
+		if (Input.IsActionPressed("MovementUp"))
 		{
 			acceleration += accel;
 			speedY -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
@@ -41,7 +46,7 @@ public partial class Ship_move : CharacterBody2D
 				acceleration -= accel;
 			}
 		}
-		if (Input.IsPhysicalKeyPressed(Key.S))
+		if (Input.IsActionPressed("MovementDown"))
 		{
 			acceleration += accel;
 			speedY += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
@@ -51,7 +56,7 @@ public partial class Ship_move : CharacterBody2D
 				acceleration -= accel;
 			}
 		}
-		if (Input.IsPhysicalKeyPressed(Key.A))
+		if (Input.IsActionPressed("MovementLeft"))
 		{
 			acceleration += accel;
 			speedX -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
@@ -61,7 +66,7 @@ public partial class Ship_move : CharacterBody2D
 				acceleration -= accel;
 			}
 		}
-		if (Input.IsPhysicalKeyPressed(Key.D))
+		if (Input.IsActionPressed("MovementRight"))
 		{
 			acceleration += accel;
 			speedX += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;

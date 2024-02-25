@@ -3,7 +3,7 @@ using System;
 
 public partial class turret : Node2D
 {
-	PackedScene projectile = (PackedScene)GD.Load("res://projectile.tscn");
+	PackedScene projectile = (PackedScene)GD.Load("res://Scenes/projectile.tscn");
 	private float startRot = 0f;
 	Timer timer;
 	private float rOF = .25f;

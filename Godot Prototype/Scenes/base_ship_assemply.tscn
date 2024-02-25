@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://kpopbg3fdn22"]
+
+[ext_resource type="PackedScene" uid="uid://cndke8tt721x4" path="res://Scenes/base_ship.tscn" id="1_1caai"]
+[ext_resource type="PackedScene" uid="uid://dp5rn1owy2cxb" path="res://Scenes/base_turret_layout.tscn" id="2_hbu4b"]
+[ext_resource type="PackedScene" uid="uid://dnqb1m87s47we" path="res://Scenes/base_hangar_layout.tscn" id="3_krgw3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5omwq"]
+size = Vector2(124, 38)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5omwq")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.3, 1.3)
+position_smoothing_enabled = true
+
+[node name="Sprite2D" parent="." instance=ExtResource("1_1caai")]
+
+[node name="turrets" parent="." instance=ExtResource("2_hbu4b")]
+
+[node name="hangars" parent="." instance=ExtResource("3_krgw3")]

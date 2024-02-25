@@ -8,11 +8,11 @@ public partial class Ship_move : CharacterBody2D
 	{
 	}
 
-	float dp = 0f; //velocity
-	float ddp = 0f; //real acceleration
-	float accel = 50f; // base value for acceleration
-	float AMOUNTX = 0f; // speed on the x axis
-	float AMOUNTY = 0f; // speed on the y axis
+	float velocity = 0f; //velocity
+	float acceleration = 0f; //real acceleration
+	const float accel = 50f; // base value for acceleration
+	public float speedX = 0f; // speed on the x axis
+	public float speedY = 0f; // speed on the y axis
 
 
 
@@ -20,59 +20,71 @@ public partial class Ship_move : CharacterBody2D
 	public override void _Process(double delta)
 	{
 
-		//put a max and min on DDP to prevent extreme speed or rubberbanding on deceleration
-		if (ddp > accel * 10)
-			ddp = accel * 10;
-		else if (ddp < 0)
-			ddp = 0;
+		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
+		if (acceleration > accel * 10)
+			acceleration = accel * 10;
+		else if (acceleration < 0)
+			acceleration = 0;
 
 		//set velocity	
-		dp += ddp * (float)delta;
+		velocity += acceleration * (float)delta;
 
-		if (Input.IsPhysicalKeyPressed(Key.W) || Input.IsPhysicalKeyPressed(Key.S) || Input.IsPhysicalKeyPressed(Key.A) || Input.IsPhysicalKeyPressed(Key.D))
-		{
-			ddp += accel; // accelerate if any movement key is pressed
-		}
+
 		
 		// calculate directional speed based on which key was pressed
 		if (Input.IsPhysicalKeyPressed(Key.W))
 		{
-			AMOUNTY -= dp * (float)delta + ddp * (float)delta * (float)delta * .5f;
+			acceleration += accel;
+			speedY -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsPhysicalKeyPressed(Key.A) || Input.IsPhysicalKeyPressed(Key.D)) {
+				speedY *= .975f;
+				acceleration -= accel;
+			}
 		}
 		if (Input.IsPhysicalKeyPressed(Key.S))
 		{
-			AMOUNTY += dp * (float)delta + ddp * (float)delta * (float)delta * .5f;
+			acceleration += accel;
+			speedY += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsPhysicalKeyPressed(Key.A) || Input.IsPhysicalKeyPressed(Key.D))
+			{
+				speedY *= .975f;
+				acceleration -= accel;
+			}
 		}
 		if (Input.IsPhysicalKeyPressed(Key.A))
 		{
-			AMOUNTX -= dp * (float)delta + ddp * (float)delta * (float)delta * .5f;
+			acceleration += accel;
+			speedX -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsPhysicalKeyPressed(Key.W) || Input.IsPhysicalKeyPressed(Key.S))
+			{
+				speedX *= .975f;
+				acceleration -= accel;
+			}
 		}
 		if (Input.IsPhysicalKeyPressed(Key.D))
 		{
-			AMOUNTX += dp * (float)delta + ddp * (float)delta * (float)delta * .5f;
-		}
-
-
-		// implement as nested if in previous section when I have the time.
-		if ((Input.IsPhysicalKeyPressed(Key.W) && Input.IsPhysicalKeyPressed(Key.A)) || (Input.IsPhysicalKeyPressed(Key.W) && Input.IsPhysicalKeyPressed(Key.D)) || (Input.IsPhysicalKeyPressed(Key.S) && Input.IsPhysicalKeyPressed(Key.A)) || (Input.IsPhysicalKeyPressed(Key.S) && Input.IsPhysicalKeyPressed(Key.D))) 
-		{
-			AMOUNTX *= .975f;
-			AMOUNTY *= .975f;
+			acceleration += accel;
+			speedX += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsPhysicalKeyPressed(Key.W) || Input.IsPhysicalKeyPressed(Key.S))
+			{
+				speedX *= .975f;
+				acceleration -= accel;
+			}
 		}
 
 		// set new position based on current directional speed
-		this.Position += new Vector2(AMOUNTX, AMOUNTY);
+		this.Position += new Vector2(speedX, speedY);
 
 
 		// friction for smooth accel/decel
-		if (AMOUNTY != 0)
+		if (speedY != 0)
 		{
-			AMOUNTY *= .95f;
+			speedY *= .95f;
 		} 
-		if (AMOUNTX != 0)
+		if (speedX != 0)
 		{
-			AMOUNTX *= .95f;
+			speedX *= .95f;
 		}
-		ddp -= dp * 5f;
+		acceleration -= velocity * 5f;
 	}
 }

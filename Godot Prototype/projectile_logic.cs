@@ -7,7 +7,7 @@ public partial class projectile_logic : RigidBody2D
 	public Vector2 velocity = new(0, 0);
 	float speed = 500f;
 	Vector2 startingPos;
-	float range = 1.5f;
+	float range = .8f;
 	float totalMoved;
 	Timer timer;
 
@@ -16,7 +16,7 @@ public partial class projectile_logic : RigidBody2D
 	{
 		startingPos = Position;
 		timer = GetChild<Timer>(2);
-		timer.WaitTime = range;
+		timer.WaitTime = range + GD.RandRange(-.1, .1);
 		timer.Start();
 		timer.Timeout += () => Free();
 	}

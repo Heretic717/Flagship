@@ -13,8 +13,8 @@ public partial class turret : Node2D
 	private bool barrel2 = false;
 	Vector2 CursorPos;
 	Vector2 miss;
-	float minAcc = .85f;
-	float maxAcc = 1f;
+	float minAcc = .95f;
+	float maxAcc = 1.05f;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

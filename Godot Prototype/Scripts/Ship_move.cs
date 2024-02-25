@@ -11,7 +11,8 @@ public partial class Ship_move : CharacterBody2D
 	float velocity = 0f; //velocity
 	float acceleration = 0f; //real acceleration
 	const float accel = 50f; // base value for acceleration
-	public static Vector2 speed = new(0, 0);
+	public static Vector2 speed = new(0,0); // speed on x and y axis
+
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,7 +27,6 @@ public partial class Ship_move : CharacterBody2D
 
 		//set velocity	
 		velocity += acceleration * (float)delta;
-
 		
 		// calculate directional speed based on which key was pressed
 		if (Input.IsActionPressed("MovementUp"))

@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://btqll5avw72pl"]
+
+[ext_resource type="Script" path="res://Ship_move.cs" id="1_trj3n"]
+[ext_resource type="PackedScene" uid="uid://2wfedgqn20m" path="res://star_ship.tscn" id="1_w851l"]
+[ext_resource type="PackedScene" uid="uid://b5m633v10atcu" path="res://hangar_layout_star.tscn" id="3_e3unb"]
+[ext_resource type="PackedScene" uid="uid://b78a40qelqvcs" path="res://turret_layout_star.tscn" id="4_jautf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i7iqc"]
+radius = 41.3038
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_trj3n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i7iqc")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.3, 1.3)
+position_smoothing_enabled = true
+
+[node name="Star Ship" parent="." instance=ExtResource("1_w851l")]
+position = Vector2(0, 0)
+
+[node name="Hangar_Layout" parent="." instance=ExtResource("3_e3unb")]
+scale = Vector2(0.25, 0.25)
+
+[node name="Turret_Layout" parent="." instance=ExtResource("4_jautf")]
+scale = Vector2(0.25, 0.25)

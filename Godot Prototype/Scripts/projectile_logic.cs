@@ -18,7 +18,7 @@ public partial class projectile_logic : RigidBody2D
 		timer = GetChild<Timer>(2);
 		timer.WaitTime = range + GD.RandRange(-.1, .1);
 		timer.Start();
-		timer.Timeout += () => Free();
+		timer.Timeout += () => QueueFree();
 	}
 
 	public override void _PhysicsProcess(double delta)

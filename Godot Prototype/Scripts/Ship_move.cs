@@ -11,9 +11,7 @@ public partial class Ship_move : CharacterBody2D
 	float velocity = 0f; //velocity
 	float acceleration = 0f; //real acceleration
 	const float accel = 50f; // base value for acceleration
-	public float speedX = 0f; // speed on the x axis
-	public float speedY = 0f; // speed on the y axis
-
+	public static Vector2 speed = new(0, 0);
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,66 +27,60 @@ public partial class Ship_move : CharacterBody2D
 		//set velocity	
 		velocity += acceleration * (float)delta;
 
-
-
-		if (Input.IsActionPressed("MovementUp") || Input.IsActionPressed("MovementDown") || Input.IsActionPressed("MovementLeft") || Input.IsActionPressed("MovementRight"))
-		{
-			ddp += accel; // accelerate if any movement key is pressed
-		}
 		
 		// calculate directional speed based on which key was pressed
 		if (Input.IsActionPressed("MovementUp"))
 		{
 			acceleration += accel;
-			speedY -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
-			if (Input.IsPhysicalKeyPressed(Key.A) || Input.IsPhysicalKeyPressed(Key.D)) {
-				speedY *= .975f;
+			speed.Y -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsActionPressed("MovementLeft") || Input.IsActionPressed("MovementRight")) {
+				speed.Y *= .975f;
 				acceleration -= accel;
 			}
 		}
 		if (Input.IsActionPressed("MovementDown"))
 		{
 			acceleration += accel;
-			speedY += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
-			if (Input.IsPhysicalKeyPressed(Key.A) || Input.IsPhysicalKeyPressed(Key.D))
+			speed.Y += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsActionPressed("MovementLeft") || Input.IsActionPressed("MovementRight"))
 			{
-				speedY *= .975f;
+				speed.Y *= .975f;
 				acceleration -= accel;
 			}
 		}
 		if (Input.IsActionPressed("MovementLeft"))
 		{
 			acceleration += accel;
-			speedX -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
-			if (Input.IsPhysicalKeyPressed(Key.W) || Input.IsPhysicalKeyPressed(Key.S))
+			speed.X -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsActionPressed("MovementUp") || Input.IsActionPressed("MovementDown"))
 			{
-				speedX *= .975f;
+				speed.X *= .975f;
 				acceleration -= accel;
 			}
 		}
 		if (Input.IsActionPressed("MovementRight"))
 		{
 			acceleration += accel;
-			speedX += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
-			if (Input.IsPhysicalKeyPressed(Key.W) || Input.IsPhysicalKeyPressed(Key.S))
+			speed.X += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			if (Input.IsActionPressed("MovementUp") || Input.IsActionPressed("MovementDown"))
 			{
-				speedX *= .975f;
+				speed.X *= .975f;
 				acceleration -= accel;
 			}
 		}
 
 		// set new position based on current directional speed
-		this.Position += new Vector2(speedX, speedY);
+		this.Position += new Vector2(speed.X, speed.Y);
 
 
 		// friction for smooth accel/decel
-		if (speedY != 0)
+		if (speed.Y != 0)
 		{
-			speedY *= .95f;
+			speed.Y *= .95f;
 		} 
-		if (speedX != 0)
+		if (speed.X != 0)
 		{
-			speedX *= .95f;
+			speed.X *= .95f;
 		}
 		acceleration -= velocity * 5f;
 	}

@@ -51,49 +51,41 @@ noise = SubResource("FastNoiseLite_6oj8r")
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.8, 0.8)
-motion_mirroring = Vector2(7680, 4320)
+motion_mirroring = Vector2(3840, 2160)
 
 [node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
-offset_left = -1827.0
-offset_top = -2240.0
-offset_right = 3173.0
-offset_bottom = 2760.0
+offset_right = 3840.0
+offset_bottom = 2160.0
 texture = ExtResource("1_b8nva")
 stretch_mode = 1
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.9, 0.9)
-motion_mirroring = Vector2(7680, 4320)
+motion_mirroring = Vector2(3840, 2160)
 
 [node name="TextureRect2" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
-offset_left = -1827.0
-offset_top = -2240.0
-offset_right = 3173.0
-offset_bottom = 2760.0
+offset_right = 3840.0
+offset_bottom = 2160.0
 texture = ExtResource("3_7l4vi")
 stretch_mode = 1
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.95, 0.95)
-motion_mirroring = Vector2(7680, 4320)
+motion_mirroring = Vector2(3840, 2160)
 
 [node name="TextureRect3" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
-offset_left = -1827.0
-offset_top = -2240.0
-offset_right = 3173.0
-offset_bottom = 2760.0
+offset_right = 3840.0
+offset_bottom = 2160.0
 texture = SubResource("NoiseTexture2D_562bx")
 stretch_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_mirroring = Vector2(7680, 4320)
+motion_mirroring = Vector2(3840, 2160)
 
 [node name="TextureRect3" type="TextureRect" parent="ParallaxBackground/ParallaxLayer4"]
-offset_left = -1827.0
-offset_top = -2240.0
-offset_right = 3173.0
-offset_bottom = 2760.0
+offset_right = 3840.0
+offset_bottom = 2160.0
 texture = SubResource("NoiseTexture2D_m2m2y")
 stretch_mode = 1
 metadata/_edit_use_anchors_ = true

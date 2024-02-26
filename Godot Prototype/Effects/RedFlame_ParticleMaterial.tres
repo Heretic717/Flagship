@@ -1,14 +1,14 @@
 [gd_resource type="ParticleProcessMaterial" load_steps=5 format=3 uid="uid://b7upt1k04wfwg"]
 
 [sub_resource type="Gradient" id="Gradient_s2668"]
-offsets = PackedFloat32Array(0, 0.634508)
+offsets = PackedFloat32Array(0, 0.593692)
 colors = PackedColorArray(0.863216, 0.310195, 0.0194976, 1, 0.103744, 0.103744, 0.103744, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_mtog4"]
 gradient = SubResource("Gradient_s2668")
 
 [sub_resource type="Curve" id="Curve_n85tg"]
-_data = [Vector2(0, 0.663866), 0.0, -0.071115, 0, 0, Vector2(1, 0), -0.536028, 0.0, 0, 0]
+_data = [Vector2(0, 0.806723), 0.0, -0.071115, 0, 0, Vector2(1, 0), -0.536028, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_hfsmo"]

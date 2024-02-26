@@ -9,4 +9,5 @@
 amount = 50
 process_material = ExtResource("1_hsaqw")
 texture = ExtResource("2_5wee4")
-draw_order = 2
+lifetime = 1.5
+draw_order = 0

@@ -1,19 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://btqll5avw72pl"]
+[gd_scene load_steps=5 format=3 uid="uid://btqll5avw72pl"]
 
-[ext_resource type="Script" path="res://Scripts/Ship_move.cs" id="1_trj3n"]
+[ext_resource type="Script" path="res://Scripts/star_ship_move.cs" id="1_u486l"]
 [ext_resource type="PackedScene" uid="uid://2wfedgqn20m" path="res://Scenes/star_ship.tscn" id="1_w851l"]
 [ext_resource type="PackedScene" uid="uid://b5m633v10atcu" path="res://Scenes/hangar_layout_star.tscn" id="3_e3unb"]
 [ext_resource type="PackedScene" uid="uid://b78a40qelqvcs" path="res://Scenes/turret_layout_star.tscn" id="4_jautf"]
 
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_i7iqc"]
-radius = 41.3038
-
 [node name="CharacterBody2D" type="CharacterBody2D"]
-script = ExtResource("1_trj3n")
+script = ExtResource("1_u486l")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_i7iqc")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(3, 62, 14, 34, 41, 47, 46, 42, 33, 14, 62, 4, 62, -3, 33, -14, 46, -41, 40, -46, 14, -33, 3, -62, -4, -62, -15, -33, -41, -46, -47, -41, -34, -14, -63, -3, -63, 4, -34, 14, -47, 42, -41, 47, -14, 34, -4, 63)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.3, 1.3)

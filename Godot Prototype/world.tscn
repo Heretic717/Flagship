@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://djfddf2qupyba"]
+[gd_scene load_steps=11 format=3 uid="uid://djfddf2qupyba"]
 
+[ext_resource type="Script" path="res://Scripts/LoadPlayerTemp.cs" id="1_1efal"]
 [ext_resource type="Texture2D" uid="uid://duyjc786q2w5x" path="res://textures/Noise.tres" id="1_b8nva"]
-[ext_resource type="PackedScene" uid="uid://btqll5avw72pl" path="res://Scenes/ship_assembly.tscn" id="1_tlnea"]
 [ext_resource type="Texture2D" uid="uid://mdrictcnm6qt" path="res://textures/noise_alpha.tres" id="3_7l4vi"]
+[ext_resource type="PackedScene" uid="uid://b4qak4j8pv4dl" path="res://Scenes/reticle.tscn" id="4_hasag"]
 
 [sub_resource type="Gradient" id="Gradient_6volx"]
 offsets = PackedFloat32Array(0.028021, 0.0805604)
@@ -45,9 +46,6 @@ color_ramp = SubResource("Gradient_nrqvy")
 noise = SubResource("FastNoiseLite_6oj8r")
 
 [node name="World-Main" type="Node2D"]
-
-[node name="Player" parent="." instance=ExtResource("1_tlnea")]
-position = Vector2(584, 300)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -100,4 +98,7 @@ texture = SubResource("NoiseTexture2D_m2m2y")
 stretch_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[editable path="Player"]
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("1_1efal")
+
+[node name="reticle" parent="." instance=ExtResource("4_hasag")]

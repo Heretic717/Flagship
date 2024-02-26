@@ -16,7 +16,7 @@ public partial class Ship_move : CharacterBody2D
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 
 		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
@@ -70,7 +70,7 @@ public partial class Ship_move : CharacterBody2D
 		}
 
 		// set new position based on current directional speed
-		this.Position += new Vector2(speed.X, speed.Y);
+		MoveAndCollide(new Vector2(speed.X, speed.Y));
 
 
 		// friction for smooth accel/decel

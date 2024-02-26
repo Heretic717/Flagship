@@ -6,7 +6,7 @@ public partial class turret : Node2D
 	PackedScene projectile = (PackedScene)GD.Load("res://Scenes/projectile.tscn");
 	private float startRot = 0f;
 	Timer timer;
-	private float rOF = .25f;
+	private float rOF = .15f;
 	private bool canFire = false;
 
 	private bool barrel1 = true;
@@ -63,8 +63,10 @@ public partial class turret : Node2D
 		barrel2 = !barrel2;
 		canFire = false;
 
-		proj.LookAt(CursorPos * miss);
-		proj.velocity = (CursorPos * miss - GlobalPosition).Normalized();
+		proj.LookAt(CursorPos);
+		proj.velocity = (CursorPos - GlobalPosition).Normalized() * miss + base_ship_move.speed.Rotated(proj.GlobalRotation) * new Vector2(.1f, .1f);
+
+		//Rotated(GetParent<Node2D>().GetParent<CharacterBody2D>().GlobalRotation).
 	}
 }
 

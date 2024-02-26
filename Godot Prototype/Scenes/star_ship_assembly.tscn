@@ -18,6 +18,24 @@ position_smoothing_enabled = true
 [node name="Star Ship" parent="." instance=ExtResource("1_w851l")]
 position = Vector2(0, 0)
 
+[node name="thruster1" type="Node2D" parent="Star Ship"]
+position = Vector2(-252, 48)
+
+[node name="thruster2" type="Node2D" parent="Star Ship"]
+position = Vector2(-252, -48)
+
+[node name="thruster3" type="Node2D" parent="Star Ship"]
+position = Vector2(-204, 84)
+
+[node name="thruster4" type="Node2D" parent="Star Ship"]
+position = Vector2(-204, -80)
+
+[node name="thruster5" type="Node2D" parent="Star Ship"]
+position = Vector2(-252, 0)
+
+[node name="thruster6" type="Node2D" parent="Star Ship"]
+position = Vector2(-252, 0)
+
 [node name="Hangar_Layout" parent="." instance=ExtResource("3_e3unb")]
 scale = Vector2(0.25, 0.25)
 

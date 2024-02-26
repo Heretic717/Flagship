@@ -4,9 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://e0umb61taxwm" path="res://textures/particle.png" id="2_5wee4"]
 
 [node name="FireEffect" type="Node2D"]
+z_index = -1
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-amount = 50
+emitting = false
+amount = 500
 process_material = ExtResource("1_c61x4")
 texture = ExtResource("2_5wee4")
 lifetime = 1.5

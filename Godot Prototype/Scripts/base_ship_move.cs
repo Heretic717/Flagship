@@ -8,9 +8,24 @@ public partial class base_ship_move : CharacterBody2D
 	float radialAcceleration = 0f;
 	float radialVelocity = 0f;
 	float rotationSpeed;
-	const float accel = 50f; // base value for acceleration
+	const float accel = 20f; // base value for acceleration
 	public static Vector2 speed = new(0, 0); // speed on x and y axis
+	GpuParticles2D thrusterMain;
+	GpuParticles2D thruster1;
+	GpuParticles2D thruster2;
+	GpuParticles2D thruster3;
+	GpuParticles2D thruster4;
 
+	public override void _Ready()
+	{
+
+		thrusterMain = GetChild<Sprite2D>(2).GetChild<Node2D>(0).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
+		thruster1 = GetChild<Sprite2D>(2).GetChild<Node2D>(1).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
+		thruster2 = GetChild<Sprite2D>(2).GetChild<Node2D>(2).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
+		thruster3 = GetChild<Sprite2D>(2).GetChild<Node2D>(3).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
+		thruster4 = GetChild<Sprite2D>(2).GetChild<Node2D>(4).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
+
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -34,22 +49,42 @@ public partial class base_ship_move : CharacterBody2D
 		{
 			acceleration += accel;
 			speed.X += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
+			thrusterMain.Emitting = true;
+			thruster1.Emitting = true;
+			thruster2.Emitting = true;
 		}
 		if (Input.IsActionPressed("MovementDown"))
 		{
 			speed.X *= .8f;
+			thrusterMain.Emitting = false;
+			thruster1.Emitting = false;
+			thruster2.Emitting = false;
 		}
 		if (Input.IsActionPressed("MovementLeft"))
 		{
 			radialAcceleration += accel;
 			rotationSpeed += (-radialVelocity * (float)delta + radialAcceleration * (float)delta * (float)delta * .5f) / 180 * 3.14f;
-			rotationSpeed *= .7f;
+			rotationSpeed *= .8f;
+			thruster4.Emitting = true;
 		}
 		if (Input.IsActionPressed("MovementRight"))
 		{
 			radialAcceleration += accel;
 			rotationSpeed += (radialVelocity * (float)delta + radialAcceleration * (float)delta * (float)delta * .5f) / 180 * 3.14f;
-			rotationSpeed *= .7f;
+			rotationSpeed *= .8f;
+			thruster3.Emitting = true;
+		}
+
+		if (Input.IsActionJustReleased("MovementUp")) {
+			thrusterMain.Emitting = false;
+			thruster1.Emitting = false;
+			thruster2.Emitting = false;
+		}
+		if (Input.IsActionJustReleased("MovementLeft")) {
+			thruster4.Emitting = false;
+		}
+		if (Input.IsActionJustReleased("MovementRight")) {
+			thruster3.Emitting = false;
 		}
 
 

@@ -7,7 +7,7 @@ public partial class projectile_logic : RigidBody2D
 	public Vector2 velocity = new(0, 0);
 	float speed = 500f;
 	Vector2 startingPos;
-	public float range = .7f;
+	public float range = .35f;
 	float totalMoved;
 	Timer timer;
 

@@ -59,7 +59,7 @@ public partial class enemy_fighter_AI : RigidBody2D
 	{
 		ContactMonitor = true;
 
-		player = GetTree().Root.GetChild<Node2D>(0).GetChild<Node2D>(1).GetChild<RigidBody2D>(0);
+		player = GetTree().Root.GetChild<Node2D>(1).GetChild<Node2D>(1).GetChild<RigidBody2D>(0);
 
 		thrusterMain = GetChild<Sprite2D>(3).GetChild<Node2D>(0).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster1 = GetChild<Sprite2D>(3).GetChild<Node2D>(1).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);

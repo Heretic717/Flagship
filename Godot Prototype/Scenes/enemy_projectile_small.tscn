@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c7urrd5xql8li" path="res://textures/Projectile.png" id="2_i8sgq"]
 
 [node name="EnemyProjectileSmall" type="RigidBody2D" groups=["enemyprojectilesmall"]]
-collision_layer = 2
+collision_layer = 8
 collision_mask = 2
 mass = 0.01
 gravity_scale = 0.0

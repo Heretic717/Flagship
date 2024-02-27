@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cndba3kxp4yoo"]
+
+[ext_resource type="Script" path="res://Scripts/user_variables.gd" id="1_bqrbo"]
+
+[node name="UserVariables" type="Node"]
+script = ExtResource("1_bqrbo")

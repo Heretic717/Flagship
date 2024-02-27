@@ -3,7 +3,7 @@ using System;
 
 public partial class LoadPlayerTemp : Node2D
 {
-	string[] shipPaths = new string[2] { "res://Scenes/base_ship_assembly.tscn", "res://Scenes/base_ship_assembly.tscn" };
+	string[] shipPaths = new string[2] { "res://Scenes/base_ship_assembly.tscn", "res://Scenes/star_ship_assembly.tscn" };
 	
 	PackedScene shipModel;
 	// Called when the node enters the scene tree for the first time.

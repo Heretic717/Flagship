@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://djfddf2qupyba"]
+[gd_scene load_steps=12 format=3 uid="uid://djfddf2qupyba"]
 
 [ext_resource type="Script" path="res://Scripts/LoadPlayerTemp.cs" id="1_1efal"]
 [ext_resource type="Texture2D" uid="uid://duyjc786q2w5x" path="res://textures/Noise.tres" id="1_b8nva"]
 [ext_resource type="Texture2D" uid="uid://mdrictcnm6qt" path="res://textures/noise_alpha.tres" id="3_7l4vi"]
 [ext_resource type="PackedScene" uid="uid://b4qak4j8pv4dl" path="res://Scenes/reticle.tscn" id="4_hasag"]
+[ext_resource type="PackedScene" uid="uid://dfjxftgd47guj" path="res://Scenes/enemy_fighter.tscn" id="5_l5b3v"]
 
 [sub_resource type="Gradient" id="Gradient_6volx"]
 offsets = PackedFloat32Array(0.028021, 0.0805604)
@@ -94,3 +95,7 @@ metadata/_edit_use_anchors_ = true
 script = ExtResource("1_1efal")
 
 [node name="reticle" parent="." instance=ExtResource("4_hasag")]
+
+[node name="EnemyFighter" parent="." instance=ExtResource("5_l5b3v")]
+position = Vector2(550, 0)
+collision_mask = 65

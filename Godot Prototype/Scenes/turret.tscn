@@ -10,7 +10,7 @@ script = ExtResource("2_7f1dd")
 wait_time = 0.25
 
 [node name="visuals" type="Sprite2D" parent="."]
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.35, 0.35)
 texture = ExtResource("1_h0t3q")
 
 [node name="Node2D" type="Node2D" parent="visuals"]

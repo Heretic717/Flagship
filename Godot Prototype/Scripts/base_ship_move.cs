@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Reflection;
 
 public partial class base_ship_move : CharacterBody2D
 {
@@ -25,6 +26,10 @@ public partial class base_ship_move : CharacterBody2D
 		thruster3 = GetChild<Sprite2D>(2).GetChild<Node2D>(3).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster4 = GetChild<Sprite2D>(2).GetChild<Node2D>(4).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 
+		Area2D Attack_Orbit = GetChild<Area2D>(3);
+		int intersectingBodies = Attack_Orbit.GetOverlappingBodies().Count;
+		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
+		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -109,5 +114,17 @@ public partial class base_ship_move : CharacterBody2D
 
 		acceleration -= velocity * 5f;
 		radialAcceleration -= radialVelocity * 5f;
+	}
+
+	private void _on_Attack_Orbit_body_entered(enemy_fighter_AI body) {
+
+		if (body.IsInGroup("Enemy"))
+			body.state = enemy_fighter_AI.State.ORBIT;
+	}
+	private void _on_Attack_Orbit_body_exited(enemy_fighter_AI body)
+	{
+
+		if (body.IsInGroup("Enemy"))
+			body.state = enemy_fighter_AI.State.APPROACH;
 	}
 }

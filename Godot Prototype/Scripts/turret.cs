@@ -4,6 +4,7 @@ using System;
 public partial class turret : Node2D
 {
 	PackedScene projectile = (PackedScene)GD.Load("res://Scenes/projectile.tscn");
+	PackedScene[] muzzelFlare = new PackedScene[3]{ (PackedScene)GD.Load("res://Scenes/muzzle_flashes_1.tscn"), (PackedScene)GD.Load("res://Scenes/muzzle_flashes_2.tscn"), (PackedScene)GD.Load("res://Scenes/muzzle_flashes_3.tscn") };
 	private float startRot = 0f;
 	Timer timer;
 	private float rOF = .15f;
@@ -12,9 +13,8 @@ public partial class turret : Node2D
 	private bool barrel1 = true;
 	private bool barrel2 = false;
 	Vector2 CursorPos;
-	Vector2 miss;
-	float minAcc = .95f;
-	float maxAcc = 1.05f;
+	float missRadius = 10f;
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -26,7 +26,7 @@ public partial class turret : Node2D
 		timer.Timeout += () => canFire = true;
 	}
 
-
+	
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -35,19 +35,34 @@ public partial class turret : Node2D
 		GetChild<Sprite2D>(1).LookAt(CursorPos);
 		GetChild<Sprite2D>(1).GetChild<Node2D>(0).LookAt(CursorPos);
 
-		miss = new((float)GD.RandRange(minAcc, maxAcc), (float)GD.RandRange(minAcc, maxAcc));
-
 		if (Input.IsMouseButtonPressed(MouseButton.Left) && canFire) {
-			Fire(miss);
+			Fire(forcedMissRadius(GD.Randf()));
 		}
 	}
+	private Vector2 forcedMissRadius(float random)
+	{
+		Vector2 kill_cirlce_center = CursorPos;
+		float angle = random * (float)Math.PI * 2f;
+		float x = kill_cirlce_center.X + (float)Math.Cos(angle) * missRadius;
+		float y = kill_cirlce_center.Y + (float)Math.Sin(angle) * missRadius;
+
+		return new Vector2(x, y);
+	}
+
 	private void Fire(Vector2 miss)
 	{
+		int flareIndex = GD.RandRange(0, 2);
 		projectile_logic proj = projectile.Instantiate<projectile_logic>();
+		Sprite2D flare = muzzelFlare[flareIndex].Instantiate<Sprite2D>();
 		GetTree().Root.AddChild(proj);
+		GetTree().Root.AddChild(flare);
+
+		flare.GlobalRotation = GetChild<Sprite2D>(1).GlobalRotation;
+		flare.Scale = new(.35f, .35f);
 		if (barrel1)
 		{
 			proj.GlobalPosition = GetChild<Sprite2D>(1).GetChild<Node2D>(0).GlobalPosition;
+			flare.GlobalPosition = GetChild<Sprite2D>(1).GetChild<Node2D>(0).GlobalPosition + new Vector2(4, 0).Rotated(GetChild<Sprite2D>(1).GlobalRotation);
 			timer.Stop();
 			timer.WaitTime = rOF;
 			timer.Start();
@@ -55,6 +70,7 @@ public partial class turret : Node2D
 		else if (barrel2)
 		{
 			proj.GlobalPosition = GetChild<Sprite2D>(1).GetChild<Node2D>(1).GlobalPosition;
+			flare.GlobalPosition = GetChild<Sprite2D>(1).GetChild<Node2D>(1).GlobalPosition + new Vector2(4, 0).Rotated(GetChild<Sprite2D>(1).GlobalRotation);
 			timer.Stop();
 			timer.WaitTime = rOF;
 			timer.Start();
@@ -63,10 +79,9 @@ public partial class turret : Node2D
 		barrel2 = !barrel2;
 		canFire = false;
 
-		proj.LookAt(CursorPos);
-		proj.velocity = (CursorPos - GlobalPosition).Normalized() * miss + base_ship_move.speed.Rotated(proj.GlobalRotation) * new Vector2(.1f, .1f);
-
-		//Rotated(GetParent<Node2D>().GetParent<CharacterBody2D>().GlobalRotation).
+		flare.LookAt(miss);
+		proj.LookAt(miss);
+		proj.velocity = (miss - GlobalPosition).Normalized() + base_ship_move.speed.Rotated(proj.GlobalRotation) * .1f;
 	}
 }
 

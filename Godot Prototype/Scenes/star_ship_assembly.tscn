@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://btqll5avw72pl"]
+[gd_scene load_steps=6 format=3 uid="uid://btqll5avw72pl"]
 
 [ext_resource type="Script" path="res://Scripts/star_ship_move.cs" id="1_u486l"]
 [ext_resource type="PackedScene" uid="uid://2wfedgqn20m" path="res://Scenes/star_ship.tscn" id="1_w851l"]
 [ext_resource type="PackedScene" uid="uid://b5m633v10atcu" path="res://Scenes/hangar_layout_star.tscn" id="3_e3unb"]
+[ext_resource type="PackedScene" uid="uid://cuo4ryld56y71" path="res://Effects/BlueFireEffect.tscn" id="3_roymb"]
 [ext_resource type="PackedScene" uid="uid://b78a40qelqvcs" path="res://Scenes/turret_layout_star.tscn" id="4_jautf"]
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
@@ -19,22 +20,59 @@ position_smoothing_enabled = true
 position = Vector2(0, 0)
 
 [node name="thruster1" type="Node2D" parent="Star Ship"]
-position = Vector2(-252, 48)
+position = Vector2(-252, 0)
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster1" instance=ExtResource("3_roymb")]
 
 [node name="thruster2" type="Node2D" parent="Star Ship"]
-position = Vector2(-252, -48)
+position = Vector2(-176, -176)
+rotation = 0.785398
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster2" instance=ExtResource("3_roymb")]
 
 [node name="thruster3" type="Node2D" parent="Star Ship"]
-position = Vector2(-204, 84)
+position = Vector2(0, -248)
+rotation = 1.5708
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster3" instance=ExtResource("3_roymb")]
 
 [node name="thruster4" type="Node2D" parent="Star Ship"]
-position = Vector2(-204, -80)
+position = Vector2(172, -176)
+rotation = 2.35619
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster4" instance=ExtResource("3_roymb")]
 
 [node name="thruster5" type="Node2D" parent="Star Ship"]
-position = Vector2(-252, 0)
+position = Vector2(248, 0)
+rotation = 3.14159
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster5" instance=ExtResource("3_roymb")]
 
 [node name="thruster6" type="Node2D" parent="Star Ship"]
-position = Vector2(-252, 0)
+position = Vector2(172, 180)
+rotation = 3.92699
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster6" instance=ExtResource("3_roymb")]
+
+[node name="thruster7" type="Node2D" parent="Star Ship"]
+position = Vector2(0, 248)
+rotation = 4.71239
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster7" instance=ExtResource("3_roymb")]
+
+[node name="thruster8" type="Node2D" parent="Star Ship"]
+position = Vector2(-176, 176)
+rotation = -0.785398
+scale = Vector2(4, 4)
+
+[node name="FireEffect" parent="Star Ship/thruster8" instance=ExtResource("3_roymb")]
 
 [node name="Hangar_Layout" parent="." instance=ExtResource("3_e3unb")]
 scale = Vector2(0.25, 0.25)

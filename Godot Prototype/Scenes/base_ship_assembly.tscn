@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://kpopbg3fdn22"]
+[gd_scene load_steps=8 format=3 uid="uid://kpopbg3fdn22"]
 
 [ext_resource type="PackedScene" uid="uid://cndke8tt721x4" path="res://Scenes/base_ship.tscn" id="1_1edq2"]
 [ext_resource type="Script" path="res://Scripts/base_ship_move.cs" id="1_ft0gf"]
@@ -9,14 +9,20 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5omwq"]
 size = Vector2(124, 38)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_yqtja"]
+radius = 200.0
+
+[node name="base_ship_assembly" type="CharacterBody2D"]
+motion_mode = 1
+platform_floor_layers = 4294967040
 script = ExtResource("1_ft0gf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_5omwq")
+disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.6, 1.6)
+zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 
 [node name="base_shipGraph" parent="." instance=ExtResource("1_1edq2")]
@@ -52,6 +58,15 @@ scale = Vector2(4, 4)
 
 [node name="FireEffect" parent="base_shipGraph/thruster4" instance=ExtResource("3_0kbpd")]
 rotation = 1.5708
+
+[node name="Attack_Orbit" type="Area2D" parent="."]
+collision_mask = 4
+collision_priority = 100.0
+priority = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Orbit"]
+shape = SubResource("CircleShape2D_yqtja")
+one_way_collision_margin = 40.2
 
 [node name="turrets" parent="." instance=ExtResource("2_lqbo7")]
 

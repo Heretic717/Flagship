@@ -4,6 +4,7 @@ using System;
 public partial class enemy_fighter_AI : RigidBody2D
 {
 
+	public float health = 20f;
 	float speed = 3f;
 	Vector2 velocity = Vector2.Zero;
 	public CharacterBody2D player;
@@ -21,6 +22,8 @@ public partial class enemy_fighter_AI : RigidBody2D
 	GpuParticles2D thruster2;
 	GpuParticles2D thruster3;
 	GpuParticles2D thruster4;
+
+	int collidingBodies;
 
 	public enum State 
 	{
@@ -54,6 +57,8 @@ public partial class enemy_fighter_AI : RigidBody2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		ContactMonitor = true;
+
 		player = GetTree().Root.GetChild<Node2D>(0).GetChild<Node2D>(1).GetChild<CharacterBody2D>(0);
 
 		thrusterMain = GetChild<Sprite2D>(3).GetChild<Node2D>(0).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
@@ -70,11 +75,17 @@ public partial class enemy_fighter_AI : RigidBody2D
 		timer.WaitTime = 2.5f;
 		timer.Timeout += () => canFire = true;
 		timer.Start();
+		MaxContactsReported = 100;
+		BodyEntered += (RigidBody2D) => _on_Hit((RigidBody2D)GetCollidingBodies()[collidingBodies]);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+		collidingBodies = GetCollidingBodies().Count;
+		if (health <= 0) {
+			QueueFree();
+		}
 		LookAt(player.GlobalPosition);
 		switch (state){
 			case State.APPROACH: 
@@ -116,6 +127,21 @@ public partial class enemy_fighter_AI : RigidBody2D
 					state = State.APPROACH;
 				} break;
 		}
+	}
+
+	private void hurt() {
+		health -= 1;
+		GD.Print(health);
+	}
+
+	private void _on_Hit(RigidBody2D body) 
+	{
+		GD.Print("hit");
+		//if (body.IsInGroup("projectile"))
+		//{
+			hurt();
+			body.QueueFree();
+		//}
 	}
 
 	private void AIFire(Vector2 miss)

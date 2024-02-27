@@ -16,6 +16,7 @@ public partial class base_ship_move : CharacterBody2D
 	GpuParticles2D thruster2;
 	GpuParticles2D thruster3;
 	GpuParticles2D thruster4;
+	Area2D Attack_Orbit;
 
 	public override void _Ready()
 	{
@@ -26,10 +27,9 @@ public partial class base_ship_move : CharacterBody2D
 		thruster3 = GetChild<Sprite2D>(2).GetChild<Node2D>(3).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster4 = GetChild<Sprite2D>(2).GetChild<Node2D>(4).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 
-		Area2D Attack_Orbit = GetChild<Area2D>(3);
-		int intersectingBodies = Attack_Orbit.GetOverlappingBodies().Count;
-		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
-		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
+		Attack_Orbit = GetChild<Area2D>(3);
+		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[0]);
+		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[0]);
 	}
 
 	public override void _PhysicsProcess(double delta)

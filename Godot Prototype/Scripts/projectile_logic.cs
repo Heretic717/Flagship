@@ -14,6 +14,7 @@ public partial class projectile_logic : RigidBody2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		ContactMonitor = true;
 		startingPos = Position;
 		timer = GetChild<Timer>(2);
 		timer.WaitTime = range + GD.RandRange(-.05, .05);

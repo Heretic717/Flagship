@@ -7,7 +7,7 @@ public partial class enemy_fighter_AI : RigidBody2D
 	public float health = 20f;
 	float speed = 3f;
 	Vector2 velocity = Vector2.Zero;
-	public CharacterBody2D player;
+	public RigidBody2D player;
 	public Vector2 targetSpeed = new(0, 0);
 	float randomnum;
 	float radiusMove = 100f;
@@ -59,7 +59,7 @@ public partial class enemy_fighter_AI : RigidBody2D
 	{
 		ContactMonitor = true;
 
-		player = GetTree().Root.GetChild<Node2D>(0).GetChild<Node2D>(1).GetChild<CharacterBody2D>(0);
+		player = GetTree().Root.GetChild<Node2D>(0).GetChild<Node2D>(1).GetChild<RigidBody2D>(0);
 
 		thrusterMain = GetChild<Sprite2D>(3).GetChild<Node2D>(0).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster1 = GetChild<Sprite2D>(3).GetChild<Node2D>(1).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
@@ -137,11 +137,11 @@ public partial class enemy_fighter_AI : RigidBody2D
 	private void _on_Hit(RigidBody2D body) 
 	{
 		GD.Print("hit");
-		//if (body.IsInGroup("projectile"))
-		//{
+		if (body.IsInGroup("projectile"))
+		{
 			hurt();
 			body.QueueFree();
-		//}
+		}
 	}
 
 	private void AIFire(Vector2 miss)

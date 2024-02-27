@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://btqll5avw72pl"]
+[gd_scene load_steps=7 format=3 uid="uid://btqll5avw72pl"]
 
 [ext_resource type="Script" path="res://Scripts/star_ship_move.cs" id="1_u486l"]
 [ext_resource type="PackedScene" uid="uid://2wfedgqn20m" path="res://Scenes/star_ship.tscn" id="1_w851l"]
@@ -6,7 +6,14 @@
 [ext_resource type="PackedScene" uid="uid://cuo4ryld56y71" path="res://Effects/BlueFireEffect.tscn" id="3_roymb"]
 [ext_resource type="PackedScene" uid="uid://b78a40qelqvcs" path="res://Scenes/turret_layout_star.tscn" id="4_jautf"]
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_j3t1c"]
+radius = 200.0
+
+[node name="star_ship_assembly" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 2
+mass = 10000.0
+gravity_scale = 0.0
 script = ExtResource("1_u486l")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
@@ -73,6 +80,15 @@ rotation = -0.785398
 scale = Vector2(4, 4)
 
 [node name="FireEffect" parent="Star Ship/thruster8" instance=ExtResource("3_roymb")]
+
+[node name="Attack_Orbit" type="Area2D" parent="."]
+collision_mask = 4
+collision_priority = 100.0
+priority = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Orbit"]
+shape = SubResource("CircleShape2D_j3t1c")
+one_way_collision_margin = 40.2
 
 [node name="Hangar_Layout" parent="." instance=ExtResource("3_e3unb")]
 scale = Vector2(0.25, 0.25)

@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Reflection;
 
-public partial class base_ship_move : CharacterBody2D
+public partial class base_ship_move : RigidBody2D
 {
 	float velocity = 0f; //velocity
 	float acceleration = 0f; //real acceleration
@@ -16,7 +16,12 @@ public partial class base_ship_move : CharacterBody2D
 	GpuParticles2D thruster2;
 	GpuParticles2D thruster3;
 	GpuParticles2D thruster4;
+	int intersectingBodies;
 	Area2D Attack_Orbit;
+
+	public float health = 200;
+
+	int collidingBodies;
 
 	public override void _Ready()
 	{
@@ -28,12 +33,18 @@ public partial class base_ship_move : CharacterBody2D
 		thruster4 = GetChild<Sprite2D>(2).GetChild<Node2D>(4).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 
 		Attack_Orbit = GetChild<Area2D>(3);
-		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[0]);
-		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[0]);
+		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
+		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
+
+		ContactMonitor = true;
+		MaxContactsReported = 100;
+		BodyEntered += (RigidBody2D) => _on_Hit((RigidBody2D)GetCollidingBodies()[collidingBodies]);
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
+		intersectingBodies = Attack_Orbit.GetOverlappingBodies().Count;
+		collidingBodies = GetCollidingBodies().Count;
 		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
 		if (acceleration > accel * 10)
 			acceleration = accel * 10;
@@ -126,5 +137,22 @@ public partial class base_ship_move : CharacterBody2D
 
 		if (body.IsInGroup("Enemy"))
 			body.state = enemy_fighter_AI.State.APPROACH;
+	}
+
+	private void hurt()
+	{
+		health -= 1;
+		GD.Print(health);
+	}
+
+	private void _on_Hit(RigidBody2D body)
+	{
+
+		if (body.IsInGroup("enemyprojectile"))
+		{
+			GD.Print("hurt");
+			hurt();
+			body.QueueFree();
+		}
 	}
 }

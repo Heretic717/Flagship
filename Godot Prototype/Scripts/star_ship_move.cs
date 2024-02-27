@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class star_ship_move : CharacterBody2D
+public partial class star_ship_move : RigidBody2D
 {
 	// Called when the node enters the scene tree for the first time.
 	
@@ -20,6 +20,9 @@ public partial class star_ship_move : CharacterBody2D
 	GpuParticles2D thruster7;
 	GpuParticles2D thruster8;
 
+	int intersectingBodies;
+	Area2D Attack_Orbit;
+
 	public override void _Ready()
 	{
 		thruster1 = GetChild<Sprite2D>(2).GetChild<Node2D>(0).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
@@ -30,12 +33,16 @@ public partial class star_ship_move : CharacterBody2D
 		thruster6 = GetChild<Sprite2D>(2).GetChild<Node2D>(5).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster7 = GetChild<Sprite2D>(2).GetChild<Node2D>(6).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster8 = GetChild<Sprite2D>(2).GetChild<Node2D>(7).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
+
+		Attack_Orbit = GetChild<Area2D>(3);
+		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
+		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
-
+		intersectingBodies = Attack_Orbit.GetOverlappingBodies().Count;
 		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
 		if (acceleration > accel * 10)
 			acceleration = accel * 10;
@@ -166,5 +173,18 @@ public partial class star_ship_move : CharacterBody2D
 			speed.X *= .95f;
 		}
 		acceleration -= velocity * 5f;
+	}
+
+	private void _on_Attack_Orbit_body_entered(enemy_fighter_AI body)
+	{
+
+		if (body.IsInGroup("Enemy"))
+			body.state = enemy_fighter_AI.State.ORBIT;
+	}
+	private void _on_Attack_Orbit_body_exited(enemy_fighter_AI body)
+	{
+
+		if (body.IsInGroup("Enemy"))
+			body.state = enemy_fighter_AI.State.APPROACH;
 	}
 }

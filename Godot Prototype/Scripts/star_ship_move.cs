@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class star_ship_move : RigidBody2D
+public partial class star_ship_move : Area2D
 {
 	// Called when the node enters the scene tree for the first time.
 	
@@ -19,9 +19,10 @@ public partial class star_ship_move : RigidBody2D
 	GpuParticles2D thruster6;
 	GpuParticles2D thruster7;
 	GpuParticles2D thruster8;
-
-	int intersectingBodies;
 	Area2D Attack_Orbit;
+
+	public float health = 200;
+
 
 	public override void _Ready()
 	{
@@ -35,14 +36,13 @@ public partial class star_ship_move : RigidBody2D
 		thruster8 = GetChild<Sprite2D>(2).GetChild<Node2D>(7).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 
 		Attack_Orbit = GetChild<Area2D>(3);
-		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
-		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
+
+		AreaEntered += (Area2D body) => _on_Hit(body);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
-		intersectingBodies = Attack_Orbit.GetOverlappingBodies().Count;
 		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
 		if (acceleration > accel * 10)
 			acceleration = accel * 10;
@@ -56,81 +56,86 @@ public partial class star_ship_move : RigidBody2D
 		if (Input.IsActionPressed("MovementUp"))
 		{
 			thruster7.Emitting = true;
+			thruster6.Emitting = true;
+			thruster8.Emitting = true;
 			acceleration += accel;
 			speed.Y -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
 			if (Input.IsActionPressed("MovementLeft")) {
 				speed.Y *= .975f;
 				acceleration -= accel;
+				thruster8.Emitting = false;
 
-				thruster6.Emitting = true;
-				thruster7.Emitting = false;
 			}
 			if (Input.IsActionPressed("MovementRight"))
 			{
 				speed.Y *= .975f;
 				acceleration -= accel;
-				thruster8.Emitting = true;
-				thruster7.Emitting = false;
+				thruster6.Emitting = false;
 			}
 		}
 		if (Input.IsActionPressed("MovementDown"))
 		{
+			thruster2.Emitting = true;
 			thruster3.Emitting = true;
+			thruster4.Emitting = true;
 			acceleration += accel;
 			speed.Y += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
 			if (Input.IsActionPressed("MovementLeft"))
 			{
 				speed.Y *= .975f;
 				acceleration -= accel;
-				thruster4.Emitting = true;
-				thruster3.Emitting = false;
+				thruster2.Emitting = false;
+
 			}
 			if (Input.IsActionPressed("MovementRight"))
 			{
 				speed.Y *= .975f;
 				acceleration -= accel;
-				thruster2.Emitting = true;
-				thruster3.Emitting = false;
+				thruster4.Emitting = false;
 			}
 		}
 		if (Input.IsActionPressed("MovementLeft"))
 		{
 			thruster5.Emitting = true;
+			thruster6.Emitting = true;
+			thruster4.Emitting = true;
 			acceleration += accel;
 			speed.X -= velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
 			if (Input.IsActionPressed("MovementUp"))
 			{
 				speed.X *= .975f;
 				acceleration -= accel;
-				thruster6.Emitting = true;
-				thruster5.Emitting = false;
+				thruster4.Emitting = false;
+
 			}
 			if (Input.IsActionPressed("MovementDown"))
 			{
 				speed.X *= .975f;
 				acceleration -= accel;
-				thruster4.Emitting = true;
-				thruster5.Emitting = false;
+				thruster6.Emitting = false;
+
 			}
 		}
 		if (Input.IsActionPressed("MovementRight"))
 		{
 			thruster1.Emitting = true;
+			thruster8.Emitting = true;
+			thruster2.Emitting = true;
 			acceleration += accel;
 			speed.X += velocity * (float)delta + acceleration * (float)delta * (float)delta * .5f;
 			if (Input.IsActionPressed("MovementUp"))
 			{
 				speed.X *= .975f;
 				acceleration -= accel;
-				thruster8.Emitting = true;
-				thruster1.Emitting = false;
+				thruster2.Emitting = false;
+
 			}
 			if (Input.IsActionPressed("MovementDown"))
 			{
 				speed.X *= .975f;
 				acceleration -= accel;
-				thruster2.Emitting = true;
-				thruster1.Emitting = false;
+				thruster8.Emitting = false;
+
 			}
 		}
 
@@ -160,7 +165,7 @@ public partial class star_ship_move : RigidBody2D
 		}
 
 		// set new position based on current directional speed
-		MoveAndCollide(new Vector2(speed.X, speed.Y));
+		Position += new Vector2(speed.X, speed.Y);
 
 
 		// friction for smooth accel/decel
@@ -175,16 +180,20 @@ public partial class star_ship_move : RigidBody2D
 		acceleration -= velocity * 5f;
 	}
 
-	private void _on_Attack_Orbit_body_entered(enemy_fighter_AI body)
+	private void hurt()
 	{
+		health -= 1;
 
-		if (body.IsInGroup("Enemy"))
-			body.state = enemy_fighter_AI.State.ORBIT;
 	}
-	private void _on_Attack_Orbit_body_exited(enemy_fighter_AI body)
+
+	private void _on_Hit(Area2D body)
 	{
 
-		if (body.IsInGroup("Enemy"))
-			body.state = enemy_fighter_AI.State.APPROACH;
+		if (body.IsInGroup("enemyprojectile"))
+		{
+			GD.Print("hurt");
+			hurt();
+			body.QueueFree();
+		}
 	}
 }

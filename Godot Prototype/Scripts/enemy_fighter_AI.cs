@@ -1,13 +1,13 @@
 using Godot;
 using System;
 
-public partial class enemy_fighter_AI : RigidBody2D
+public partial class enemy_fighter_AI : Area2D
 {
 
-	public float health = 20f;
+	public float health = 17f;
 	float speed = 3f;
 	Vector2 velocity = Vector2.Zero;
-	public RigidBody2D player;
+	public Area2D player;
 	public Vector2 targetSpeed = new(0, 0);
 	float randomnum;
 	float radiusMove = 100f;
@@ -15,7 +15,8 @@ public partial class enemy_fighter_AI : RigidBody2D
 	private Timer timer;
 	private bool canFire = false;
 
-	PackedScene projectile = (PackedScene)GD.Load("res://Scenes/projectile.tscn");
+	PackedScene[] muzzelFlare = new PackedScene[3] { (PackedScene)GD.Load("res://Scenes/muzzle_flashes_1.tscn"), (PackedScene)GD.Load("res://Scenes/muzzle_flashes_2.tscn"), (PackedScene)GD.Load("res://Scenes/muzzle_flashes_3.tscn") };
+	PackedScene projectile = (PackedScene)GD.Load("res://Scenes/enemy_projectile_small.tscn");
 
 	GpuParticles2D thrusterMain;
 	GpuParticles2D thruster1;
@@ -41,9 +42,9 @@ public partial class enemy_fighter_AI : RigidBody2D
 		Vector2 steering = (desired_velocity - velocity) * (float)delta * 2.5f;
 		velocity += steering;
 		if (state == State.ORBIT)
-			MoveAndCollide(velocity + targetSpeed.Rotated(player.GlobalRotation) * .1f);
+			Position += velocity + targetSpeed.Rotated(player.GlobalRotation) * .1f;
 		else
-			MoveAndCollide(velocity);
+			Position += velocity;
 	}
 	private Vector2 get_circle_position(float random, float radius) {
 		Vector2 kill_cirlce_center = player.GlobalPosition;
@@ -57,9 +58,8 @@ public partial class enemy_fighter_AI : RigidBody2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		ContactMonitor = true;
 
-		player = GetTree().Root.GetChild<Node2D>(1).GetChild<Node2D>(1).GetChild<RigidBody2D>(0);
+		//player = GetTree().Root.GetChild<Node2D>(0).GetChild<Node2D>(1).GetChild<Area2D>(0);
 
 		thrusterMain = GetChild<Sprite2D>(3).GetChild<Node2D>(0).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster1 = GetChild<Sprite2D>(3).GetChild<Node2D>(1).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
@@ -75,14 +75,15 @@ public partial class enemy_fighter_AI : RigidBody2D
 		timer.WaitTime = 2.5f;
 		timer.Timeout += () => canFire = true;
 		timer.Start();
-		MaxContactsReported = 100;
-		BodyEntered += (RigidBody2D) => _on_Hit((RigidBody2D)GetCollidingBodies()[collidingBodies]);
+
+		AreaEntered += (Area2D body) => _on_Hit(body);
+		AreaExited += (Area2D body) => _on_Disengage(body);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
-		collidingBodies = GetCollidingBodies().Count;
+		collidingBodies = GetOverlappingAreas().Count;
 		if (health <= 0) {
 			QueueFree();
 		}
@@ -131,22 +132,39 @@ public partial class enemy_fighter_AI : RigidBody2D
 
 	private void hurt() {
 		health -= 1;
-		GD.Print(health);
 	}
 
-	private void _on_Hit(RigidBody2D body) 
+	private void _on_Hit(Area2D body) 
 	{
-		GD.Print("hit");
 		if (body.IsInGroup("projectile"))
 		{
 			hurt();
 			body.QueueFree();
+		} else if (body.IsInGroup("orbitradius"))
+		{
+			_on_Proxy();
 		}
+	}
+	private void _on_Disengage(Area2D body)
+	{
+		if (!body.IsInGroup("projectile"))
+		state = State.APPROACH;
+	}
+
+	private void _on_Proxy()
+	{
+		state = State.ORBIT;
 	}
 
 	private void AIFire(Vector2 miss)
 	{
+		int flareIndex = GD.RandRange(0, 2);
 		projectile_logic proj = projectile.Instantiate<projectile_logic>();
+		Sprite2D flare = muzzelFlare[flareIndex].Instantiate<Sprite2D>();
+		GetTree().Root.AddChild(flare);
+			flare.Scale = new(.35f, .35f);
+			flare.GlobalRotation = GetChild<Sprite2D>(3).GlobalRotation;
+
 		GetTree().Root.AddChild(proj);
 			proj.GlobalPosition = GetChild<Node2D>(2).GlobalPosition;
 			timer.Stop();

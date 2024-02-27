@@ -12,7 +12,7 @@ public partial class LoadPlayerTemp : Node2D
 	{
 		selectedShip = GetNode<Node>("/root/UserVariables").Get("loadedShip").As<int>();
 		shipModel = GD.Load<PackedScene>(shipPaths[selectedShip]);
-		RigidBody2D ship = shipModel.Instantiate<RigidBody2D>();
+		Area2D ship = shipModel.Instantiate<Area2D>();
 		AddChild(ship);
 	}
 

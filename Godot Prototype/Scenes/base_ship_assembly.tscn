@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://kpopbg3fdn22"]
+[gd_scene load_steps=9 format=3 uid="uid://kpopbg3fdn22"]
 
 [ext_resource type="PackedScene" uid="uid://cndke8tt721x4" path="res://Scenes/base_ship.tscn" id="1_1edq2"]
 [ext_resource type="Script" path="res://Scripts/base_ship_move.cs" id="1_ft0gf"]
@@ -12,11 +12,15 @@ size = Vector2(124, 38)
 [sub_resource type="CircleShape2D" id="CircleShape2D_yqtja"]
 radius = 200.0
 
-[node name="base_ship_assembly" type="RigidBody2D"]
+[sub_resource type="Curve2D" id="Curve2D_wupac"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -572, -330, 0, 0, 0, 0, 564, -330, 0, 0, 0, 0, 553, 354, 0, 0, 0, 0, -566, 355, 0, 0, 0, 0, -572, -330)
+}
+point_count = 5
+
+[node name="base_ship_assembly" type="Area2D"]
 collision_layer = 2
 collision_mask = 8
-mass = 10000.0
-gravity_scale = 0.0
 script = ExtResource("1_ft0gf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -60,7 +64,7 @@ scale = Vector2(4, 4)
 [node name="FireEffect" parent="base_shipGraph/thruster4" instance=ExtResource("3_0kbpd")]
 rotation = 1.5708
 
-[node name="Attack_Orbit" type="Area2D" parent="."]
+[node name="Attack_Orbit" type="Area2D" parent="." groups=["orbitradius"]]
 collision_layer = 4
 collision_priority = 100.0
 priority = 1
@@ -68,6 +72,14 @@ priority = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Orbit"]
 shape = SubResource("CircleShape2D_yqtja")
 one_way_collision_margin = 40.2
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_wupac")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-572, -330)
+
+[node name="Node2D" type="Node2D" parent="Path2D/PathFollow2D"]
 
 [node name="turrets" parent="." instance=ExtResource("2_lqbo7")]
 

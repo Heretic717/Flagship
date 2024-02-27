@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://btqll5avw72pl"]
+[gd_scene load_steps=8 format=3 uid="uid://btqll5avw72pl"]
 
 [ext_resource type="Script" path="res://Scripts/star_ship_move.cs" id="1_u486l"]
 [ext_resource type="PackedScene" uid="uid://2wfedgqn20m" path="res://Scenes/star_ship.tscn" id="1_w851l"]
@@ -9,18 +9,22 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_j3t1c"]
 radius = 200.0
 
-[node name="star_ship_assembly" type="RigidBody2D"]
+[sub_resource type="Curve2D" id="Curve2D_qvo4d"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -572, -330, 0, 0, 0, 0, 564, -330, 0, 0, 0, 0, 553, 354, 0, 0, 0, 0, -566, 355, 0, 0, 0, 0, -572, -330)
+}
+point_count = 5
+
+[node name="star_ship_assembly" type="Area2D"]
 collision_layer = 2
-collision_mask = 9
-mass = 10000.0
-gravity_scale = 0.0
+collision_mask = 8
 script = ExtResource("1_u486l")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(3, 62, 14, 34, 41, 47, 46, 42, 33, 14, 62, 4, 62, -3, 33, -14, 46, -41, 40, -46, 14, -33, 3, -62, -4, -62, -15, -33, -41, -46, -47, -41, -34, -14, -63, -3, -63, 4, -34, 14, -47, 42, -41, 47, -14, 34, -4, 63)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.3, 1.3)
+zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 
 [node name="Star Ship" parent="." instance=ExtResource("1_w851l")]
@@ -81,14 +85,22 @@ scale = Vector2(4, 4)
 
 [node name="FireEffect" parent="Star Ship/thruster8" instance=ExtResource("3_roymb")]
 
-[node name="Attack_Orbit" type="Area2D" parent="."]
-collision_mask = 4
+[node name="Attack_Orbit" type="Area2D" parent="." groups=["orbitradius"]]
+collision_layer = 4
 collision_priority = 100.0
 priority = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Orbit"]
 shape = SubResource("CircleShape2D_j3t1c")
 one_way_collision_margin = 40.2
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_qvo4d")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-572, -330)
+
+[node name="Node2D" type="Node2D" parent="Path2D/PathFollow2D"]
 
 [node name="Hangar_Layout" parent="." instance=ExtResource("3_e3unb")]
 scale = Vector2(0.25, 0.25)

@@ -1,19 +1,100 @@
-[gd_scene load_steps=5 format=3 uid="uid://djfddf2qupyba"]
+[gd_scene load_steps=12 format=3 uid="uid://djfddf2qupyba"]
 
 [ext_resource type="Script" path="res://Scripts/LoadPlayerTemp.cs" id="1_1efal"]
-[ext_resource type="PackedScene" uid="uid://ykiljokj3pmp" path="res://Scenes/parallax_background.tscn" id="1_hjhnt"]
+[ext_resource type="Texture2D" uid="uid://duyjc786q2w5x" path="res://textures/Noise.tres" id="1_b8nva"]
+[ext_resource type="Script" path="res://Scripts/worldStuff.cs" id="1_s2pxe"]
+[ext_resource type="Texture2D" uid="uid://mdrictcnm6qt" path="res://textures/noise_alpha.tres" id="3_7l4vi"]
 [ext_resource type="PackedScene" uid="uid://b4qak4j8pv4dl" path="res://Scenes/reticle.tscn" id="4_hasag"]
-[ext_resource type="PackedScene" uid="uid://dfjxftgd47guj" path="res://Scenes/enemy_fighter.tscn" id="5_l5b3v"]
+
+[sub_resource type="Gradient" id="Gradient_6volx"]
+offsets = PackedFloat32Array(0.028021, 0.0805604)
+colors = PackedColorArray(0.709499, 0.70938, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kselv"]
+seed = 1755
+frequency = 0.0426
+fractal_type = 2
+fractal_octaves = 2
+fractal_lacunarity = 0.9
+fractal_gain = -0.185
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_562bx"]
+width = 3840
+height = 2160
+generate_mipmaps = false
+seamless = true
+color_ramp = SubResource("Gradient_6volx")
+noise = SubResource("FastNoiseLite_kselv")
+
+[sub_resource type="Gradient" id="Gradient_nrqvy"]
+offsets = PackedFloat32Array(0.028021, 0.0805604)
+colors = PackedColorArray(0.792157, 0.0901961, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6oj8r"]
+seed = 335
+frequency = 0.0426
+fractal_type = 2
+fractal_octaves = 2
+fractal_lacunarity = 0.9
+fractal_gain = -0.185
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_m2m2y"]
+width = 3840
+height = 2160
+generate_mipmaps = false
+seamless = true
+color_ramp = SubResource("Gradient_nrqvy")
+noise = SubResource("FastNoiseLite_6oj8r")
 
 [node name="World-Main" type="Node2D"]
+script = ExtResource("1_s2pxe")
 
-[node name="ParallaxBackground" parent="." instance=ExtResource("1_hjhnt")]
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.8, 0.8)
+motion_mirroring = Vector2(3840, 2160)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+offset_right = 3840.0
+offset_bottom = 2160.0
+texture = ExtResource("1_b8nva")
+stretch_mode = 1
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.9, 0.9)
+motion_mirroring = Vector2(3840, 2160)
+
+[node name="TextureRect2" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
+offset_right = 3840.0
+offset_bottom = 2160.0
+texture = ExtResource("3_7l4vi")
+stretch_mode = 1
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.95, 0.95)
+motion_mirroring = Vector2(3840, 2160)
+
+[node name="TextureRect3" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+offset_right = 3840.0
+offset_bottom = 2160.0
+texture = SubResource("NoiseTexture2D_562bx")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(3840, 2160)
+
+[node name="TextureRect3" type="TextureRect" parent="ParallaxBackground/ParallaxLayer4"]
+offset_right = 3840.0
+offset_bottom = 2160.0
+texture = SubResource("NoiseTexture2D_m2m2y")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("1_1efal")
 
 [node name="reticle" parent="." instance=ExtResource("4_hasag")]
 
-[node name="EnemyFighter" parent="." instance=ExtResource("5_l5b3v")]
-position = Vector2(550, 0)
-collision_mask = 65
+[node name="EnemyTimer" type="Timer" parent="."]

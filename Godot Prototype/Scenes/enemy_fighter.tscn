@@ -4,15 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://b5l2q57r6473v" path="res://textures/fighter_enemy.png" id="1_wkfcb"]
 [ext_resource type="PackedScene" uid="uid://cd6ign8d1bxau" path="res://Effects/RedFireEffect.tscn" id="2_u5yqe"]
 
-[node name="EnemyFighter" type="RigidBody2D" groups=["Enemy"]]
-collision_mask = 23
-mass = 100.0
-gravity_scale = 0.0
+[node name="EnemyFighter" type="Area2D" groups=["Enemy"]]
+scale = Vector2(1.5, 1.5)
+collision_mask = 20
 script = ExtResource("1_pi3h1")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2(0.063, 0.063)
-polygon = PackedVector2Array(112, 0, -32, 24, -48, 32, -72, 112, -88, 128, -96, 32, -120, 0, -88, -40, -88, -128, -64, -112, -48, -32, -32, -16)
+polygon = PackedVector2Array(116.402, 0, -95.2381, -137.566, -126.984, 0, -84.6561, 137.566)
 
 [node name="E_Fighter_clock" type="Timer" parent="."]
 

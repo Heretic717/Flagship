@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Reflection;
 
-public partial class base_ship_move : RigidBody2D
+public partial class base_ship_move : Area2D
 {
 	float velocity = 0f; //velocity
 	float acceleration = 0f; //real acceleration
@@ -16,12 +16,9 @@ public partial class base_ship_move : RigidBody2D
 	GpuParticles2D thruster2;
 	GpuParticles2D thruster3;
 	GpuParticles2D thruster4;
-	int intersectingBodies;
 	Area2D Attack_Orbit;
 
 	public float health = 200;
-
-	int collidingBodies;
 
 	public override void _Ready()
 	{
@@ -33,18 +30,12 @@ public partial class base_ship_move : RigidBody2D
 		thruster4 = GetChild<Sprite2D>(2).GetChild<Node2D>(4).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 
 		Attack_Orbit = GetChild<Area2D>(3);
-		Attack_Orbit.BodyEntered += (RigidBody2D) => _on_Attack_Orbit_body_entered((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
-		Attack_Orbit.BodyExited += (RigidBody2D) => _on_Attack_Orbit_body_exited((enemy_fighter_AI)Attack_Orbit.GetOverlappingBodies()[intersectingBodies]);
 
-		ContactMonitor = true;
-		MaxContactsReported = 100;
-		BodyEntered += (RigidBody2D) => _on_Hit((RigidBody2D)GetCollidingBodies()[collidingBodies]);
+		AreaEntered += (Area2D body) => _on_Hit(body);
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		intersectingBodies = Attack_Orbit.GetOverlappingBodies().Count;
-		collidingBodies = GetCollidingBodies().Count;
 		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
 		if (acceleration > accel * 10)
 			acceleration = accel * 10;
@@ -106,7 +97,7 @@ public partial class base_ship_move : RigidBody2D
 
 		// set new position and rotationSpeed based on current speed
 		Rotate(rotationSpeed);
-		MoveAndCollide(new Vector2(speed.X, speed.Y).Rotated(Rotation));
+		Position += new Vector2(speed.X, speed.Y).Rotated(Rotation);
 
 
 		// friction for smooth accel/decel
@@ -127,28 +118,16 @@ public partial class base_ship_move : RigidBody2D
 		radialAcceleration -= radialVelocity * 5f;
 	}
 
-	private void _on_Attack_Orbit_body_entered(enemy_fighter_AI body) {
-
-		if (body.IsInGroup("Enemy"))
-			body.state = enemy_fighter_AI.State.ORBIT;
-	}
-	private void _on_Attack_Orbit_body_exited(enemy_fighter_AI body)
-	{
-
-		if (body.IsInGroup("Enemy"))
-			body.state = enemy_fighter_AI.State.APPROACH;
-	}
-
 	private void hurt()
 	{
 		health -= 1;
 		GD.Print(health);
 	}
 
-	private void _on_Hit(RigidBody2D body)
+	private void _on_Hit(Area2D body)
 	{
 
-		if (body.IsInGroup("enemyprojectile"))
+		if (body.IsInGroup("enemyprojectilesmall"))
 		{
 			GD.Print("hurt");
 			hurt();

@@ -163,3 +163,4 @@ autoplay = true
 [connection signal="pressed" from="Control/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/ShipSelect/CruiserButton" to="." method="_on_cruiser_button_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/ShipSelect/Star_ShipButton" to="." method="_on_star_ship_button_pressed"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

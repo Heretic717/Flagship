@@ -30,3 +30,7 @@ func _on_star_ship_button_pressed():
 
 func _on_quit_pressed():
 	get_tree().quit()
+
+
+func _on_audio_stream_player_finished():
+	$AudioStreamPlayer.play()

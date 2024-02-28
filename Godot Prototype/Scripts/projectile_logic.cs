@@ -59,6 +59,7 @@ public partial class projectile_logic : Area2D
 		GpuParticles2D hit = hitParticles.Instantiate<GpuParticles2D>();
 		GetTree().Root.AddChild(hit);
 		hit.GlobalPosition = GlobalPosition;
+		GetNode<Node>("/root/UserVariables").Set("Score", GetNode<Node>("/root/UserVariables").Get("Score").As<int>() + 1);
 		QueueFree();
 	}
 

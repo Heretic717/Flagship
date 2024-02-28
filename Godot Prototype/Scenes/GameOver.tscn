@@ -10,7 +10,11 @@
 [sub_resource type="GDScript" id="GDScript_4qlis"]
 script/source = "extends Control
 
+func _ready():
+	$VBoxContainer/Buttons2/Score2.text = str(UserVariables.Score)
+
 func LoadGame():
+	UserVariables.Score = 0
 	get_tree().change_scene_to_file(\"res://Scenes/world.tscn\")
 
 func _on_restart_pressed():
@@ -51,9 +55,19 @@ text = "GAME OVER"
 label_settings = SubResource("LabelSettings_rxchb")
 horizontal_alignment = 1
 
-[node name="Score" type="Label" parent="VBoxContainer"]
+[node name="Buttons2" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-text = "Score: [score]"
+alignment = 1
+
+[node name="Score" type="Label" parent="VBoxContainer/Buttons2"]
+layout_mode = 2
+text = "Score:"
+label_settings = SubResource("LabelSettings_xr0ng")
+horizontal_alignment = 1
+
+[node name="Score2" type="Label" parent="VBoxContainer/Buttons2"]
+layout_mode = 2
+text = "0"
 label_settings = SubResource("LabelSettings_xr0ng")
 horizontal_alignment = 1
 

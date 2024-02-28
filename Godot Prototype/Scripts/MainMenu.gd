@@ -17,6 +17,7 @@ func _on_texture_button_pressed():
 	$Control/VBoxContainer/ShipSelect.visible = true
 
 func LoadGame():
+	UserVariables.Score = 0
 	get_tree().change_scene_to_file("res://Scenes/world.tscn")
 
 func _on_cruiser_button_pressed():

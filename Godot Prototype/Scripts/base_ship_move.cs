@@ -19,7 +19,6 @@ public partial class base_ship_move : Area2D
 	Area2D Attack_Orbit;
 
 	PackedScene death = GD.Load<PackedScene>("res://Effects/Explosion_dead.tscn");
-
 	AudioStreamPlayer2D explode;
 
 	AudioStreamPlayer2D thrust1;

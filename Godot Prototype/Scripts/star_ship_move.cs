@@ -21,12 +21,14 @@ public partial class star_ship_move : Area2D
 	GpuParticles2D thruster8;
 	Area2D Attack_Orbit;
 
-	PackedScene death;
+	PackedScene death = GD.Load<PackedScene>("res://Effects/Explosion_dead.tscn");
 
 	public float health;
-	public float maxHealth = 200;
+	public float maxHealth = 300;
 
 	AudioStreamPlayer2D explode;
+	AudioStreamPlayer2D thrust;
+
 
 
 	public override void _Ready()
@@ -45,6 +47,7 @@ public partial class star_ship_move : Area2D
 		AreaEntered += (Area2D body) => _on_Hit(body);
 
 		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(0);
+		thrust = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(4);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -62,6 +65,8 @@ public partial class star_ship_move : Area2D
 		// calculate directional speed based on which key was pressed
 		if (Input.IsActionPressed("MovementUp"))
 		{
+			thrust.Play();
+			thrust.GlobalPosition = thruster7.GlobalPosition;
 			thruster7.Emitting = true;
 			thruster6.Emitting = true;
 			thruster8.Emitting = true;
@@ -82,6 +87,9 @@ public partial class star_ship_move : Area2D
 		}
 		if (Input.IsActionPressed("MovementDown"))
 		{
+			if (!thrust.Playing)
+				thrust.Play();
+			thrust.GlobalPosition = thruster3.GlobalPosition;
 			thruster2.Emitting = true;
 			thruster3.Emitting = true;
 			thruster4.Emitting = true;
@@ -103,6 +111,9 @@ public partial class star_ship_move : Area2D
 		}
 		if (Input.IsActionPressed("MovementLeft"))
 		{
+			if (!thrust.Playing)
+				thrust.Play();
+			thrust.GlobalPosition = thruster5.GlobalPosition;
 			thruster5.Emitting = true;
 			thruster6.Emitting = true;
 			thruster4.Emitting = true;
@@ -125,6 +136,9 @@ public partial class star_ship_move : Area2D
 		}
 		if (Input.IsActionPressed("MovementRight"))
 		{
+			if (!thrust.Playing)
+				thrust.Play();
+			thrust.GlobalPosition = thruster1.GlobalPosition;
 			thruster1.Emitting = true;
 			thruster8.Emitting = true;
 			thruster2.Emitting = true;
@@ -148,24 +162,28 @@ public partial class star_ship_move : Area2D
 
 		if (Input.IsActionJustReleased("MovementUp"))
 		{
+			thrust.Stop();
 			thruster6.Emitting = false;
 			thruster7.Emitting = false;
 			thruster8.Emitting = false;
 		}
 		if (Input.IsActionJustReleased("MovementDown"))
 		{
+			thrust.Stop();
 			thruster2.Emitting = false;
 			thruster3.Emitting = false;
 			thruster4.Emitting = false;
 		}
 		if (Input.IsActionJustReleased("MovementLeft"))
 		{
+			thrust.Stop();
 			thruster4.Emitting = false;
 			thruster5.Emitting = false;
 			thruster6.Emitting = false;
 		}
 		if (Input.IsActionJustReleased("MovementRight"))
 		{
+			thrust.Stop();
 			thruster8.Emitting = false;
 			thruster1.Emitting = false;
 			thruster2.Emitting = false;
@@ -189,7 +207,7 @@ public partial class star_ship_move : Area2D
 
 	private void hurt()
 	{
-		health -= 1;
+		health -= 10;
 
 	}
 
@@ -203,7 +221,7 @@ public partial class star_ship_move : Area2D
 		}
 	}
 
-	private void _on_Death() 
+	private async void _on_Death() 
 	{
 		// spawn explosion particles here
 		explode.Play();
@@ -212,7 +230,10 @@ public partial class star_ship_move : Area2D
 		GetTree().Root.AddChild(deathExplosion);
 		deathExplosion.GlobalPosition = GlobalPosition;
 		
-		QueueFree();
+		
 		// stop the game loop and display the game over screen
+		await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
+
+		GetTree().ChangeSceneToFile("res://Scenes/GameOver.tscn");
 	}
 }

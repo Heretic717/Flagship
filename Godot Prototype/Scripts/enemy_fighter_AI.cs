@@ -26,6 +26,9 @@ public partial class enemy_fighter_AI : Area2D
 	GpuParticles2D thruster3;
 	GpuParticles2D thruster4;
 
+	AudioStreamPlayer2D thrust;
+	AudioStreamPlayer2D shoot;
+
 	int collidingBodies;
 
 	public enum State 
@@ -83,12 +86,17 @@ public partial class enemy_fighter_AI : Area2D
 		AreaEntered += (Area2D body) => _on_Hit(body);
 		AreaExited += (Area2D body) => _on_Disengage(body);
 
-		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(0);
+		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(1);
+		thrust = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(4);
+		shoot = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(4);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+		if (!thrust.Playing)
+			thrust.Play();
+		thrust.GlobalPosition = GlobalPosition;
 		collidingBodies = GetOverlappingAreas().Count;
 		if (health <= 0) {
 			_on_Death();
@@ -164,6 +172,8 @@ public partial class enemy_fighter_AI : Area2D
 
 	private void AIFire(Vector2 miss)
 	{
+		shoot.GlobalPosition = GlobalPosition;
+		shoot.Play();
 		int flareIndex = GD.RandRange(0, 2);
 		projectile_logic proj = projectile.Instantiate<projectile_logic>();
 		Sprite2D flare = muzzelFlare[flareIndex].Instantiate<Sprite2D>();
@@ -186,7 +196,7 @@ public partial class enemy_fighter_AI : Area2D
 	private void _on_Death()
 	{
 		// spawn explosion particles here
-		
+		thrust.Stop();
 		explode.Play();
 		explode.GlobalPosition = GlobalPosition;
 		GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();

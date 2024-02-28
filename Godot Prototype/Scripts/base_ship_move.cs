@@ -18,9 +18,13 @@ public partial class base_ship_move : Area2D
 	GpuParticles2D thruster4;
 	Area2D Attack_Orbit;
 
-	PackedScene death;
+	PackedScene death = GD.Load<PackedScene>("res://Effects/Explosion_dead.tscn");
 
 	AudioStreamPlayer2D explode;
+
+	AudioStreamPlayer2D thrust1;
+	AudioStreamPlayer2D thrust2;
+	AudioStreamPlayer2D thrust3;
 
 
 	public float health;
@@ -37,6 +41,9 @@ public partial class base_ship_move : Area2D
 		thruster4 = GetChild<Sprite2D>(2).GetChild<Node2D>(4).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 
 		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(0);
+		thrust1 = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(4);
+		thrust2 = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(4);
+		thrust3 = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(4);
 
 		Attack_Orbit = GetChild<Area2D>(3);
 
@@ -75,6 +82,11 @@ public partial class base_ship_move : Area2D
 			thrusterMain.Emitting = true;
 			thruster1.Emitting = true;
 			thruster2.Emitting = true;
+			thrust1.GlobalPosition = thrusterMain.GlobalPosition;
+			if (!thrust1.Playing)
+			{
+				thrust1.Play();
+			}
 		}
 		if (Input.IsActionPressed("MovementDown"))
 		{
@@ -82,6 +94,10 @@ public partial class base_ship_move : Area2D
 			thrusterMain.Emitting = false;
 			thruster1.Emitting = false;
 			thruster2.Emitting = false;
+			if (thrust1.Playing)
+			{
+				thrust1.Stop();
+			}
 		}
 		if (Input.IsActionPressed("MovementLeft"))
 		{
@@ -89,6 +105,12 @@ public partial class base_ship_move : Area2D
 			rotationSpeed += (-radialVelocity * (float)delta + radialAcceleration * (float)delta * (float)delta * .5f) / 180 * 3.14f;
 			rotationSpeed *= .8f;
 			thruster4.Emitting = true;
+			thrust2.GlobalPosition = thruster4.GlobalPosition;
+			if (!thrust3.Playing)
+			{
+				thrust2.Play();
+			}
+
 		}
 		if (Input.IsActionPressed("MovementRight"))
 		{
@@ -96,18 +118,26 @@ public partial class base_ship_move : Area2D
 			rotationSpeed += (radialVelocity * (float)delta + radialAcceleration * (float)delta * (float)delta * .5f) / 180 * 3.14f;
 			rotationSpeed *= .8f;
 			thruster3.Emitting = true;
+			thrust3.GlobalPosition = thruster3.GlobalPosition;
+			if (!thrust3.Playing)
+			{
+				thrust3.Play();
+			}
 		}
 
 		if (Input.IsActionJustReleased("MovementUp")) {
 			thrusterMain.Emitting = false;
 			thruster1.Emitting = false;
 			thruster2.Emitting = false;
+			thrust1.Stop();
 		}
 		if (Input.IsActionJustReleased("MovementLeft")) {
 			thruster4.Emitting = false;
+			thrust3.Stop();
 		}
 		if (Input.IsActionJustReleased("MovementRight")) {
 			thruster3.Emitting = false;
+			thrust2.Stop();
 		}
 
 
@@ -136,7 +166,7 @@ public partial class base_ship_move : Area2D
 
 	private void hurt()
 	{
-		health -= 1;
+		health -= 10;
 	}
 
 	private void _on_Hit(Area2D body)
@@ -149,7 +179,7 @@ public partial class base_ship_move : Area2D
 		}
 	}
 
-	private void _on_Death()
+	private async void _on_Death()
 	{
 		// spawn explosion particles here
 
@@ -158,8 +188,11 @@ public partial class base_ship_move : Area2D
 		GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();
 		GetTree().Root.AddChild(deathExplosion);
 		deathExplosion.GlobalPosition = GlobalPosition;
-		QueueFree();
+
 		// stop the game loop and display the game over screen
+		await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
+
 		GetTree().ChangeSceneToFile("res://Scenes/GameOver.tscn");
+
 	}
 }

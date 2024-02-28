@@ -160,5 +160,6 @@ public partial class base_ship_move : Area2D
 		deathExplosion.GlobalPosition = GlobalPosition;
 		QueueFree();
 		// stop the game loop and display the game over screen
+		GetTree().ChangeSceneToFile("res://Scenes/GameOver.tscn");
 	}
 }

@@ -50,7 +50,6 @@ noise = SubResource("FastNoiseLite_6oj8r")
 script = ExtResource("1_s2pxe")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-visible = false
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.8, 0.8)
@@ -61,6 +60,7 @@ offset_right = 3840.0
 offset_bottom = 2160.0
 texture = ExtResource("1_b8nva")
 stretch_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.9, 0.9)
@@ -71,6 +71,7 @@ offset_right = 3840.0
 offset_bottom = 2160.0
 texture = ExtResource("3_7l4vi")
 stretch_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.95, 0.95)
@@ -92,6 +93,60 @@ offset_bottom = 2160.0
 texture = SubResource("NoiseTexture2D_m2m2y")
 stretch_mode = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 28.0
+offset_top = 27.0
+offset_right = 393.0
+offset_bottom = 191.0
+
+[node name="ProgressBar" type="ProgressBar" parent="Control2"]
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 27.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 249.0
+offset_top = 88.0
+offset_right = 2169.0
+offset_bottom = 1168.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 27.0
+offset_right = 448.0
+offset_bottom = 97.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Health" type="Label" parent="Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Health : "
+
+[node name="BoxContainer" type="BoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="Control/VBoxContainer/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Score : "
+
+[node name="ScoreNum" type="Label" parent="Control/VBoxContainer/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 3.0
+text = "0"
+horizontal_alignment = 1
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("1_1efal")

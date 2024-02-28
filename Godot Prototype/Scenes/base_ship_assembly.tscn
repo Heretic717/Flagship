@@ -65,7 +65,6 @@ scale = Vector2(4, 4)
 rotation = 1.5708
 
 [node name="Attack_Orbit" type="Area2D" parent="." groups=["orbitradius"]]
-visible = false
 collision_layer = 4
 collision_priority = 100.0
 priority = 1

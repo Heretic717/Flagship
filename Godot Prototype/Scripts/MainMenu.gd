@@ -13,6 +13,7 @@ func _process(_delta):
 func _on_texture_button_pressed():
 	$Control/VBoxContainer/Buttons.visible = false
 	$Control/VBoxContainer/Quit.visible = false
+	$Control/VBoxContainer/Container.visible = false
 	$Control/VBoxContainer/ShipSelect.visible = true
 
 func LoadGame():
@@ -25,3 +26,7 @@ func _on_cruiser_button_pressed():
 func _on_star_ship_button_pressed():
 	UserVariables.loadedShip = 1
 	LoadGame()
+
+
+func _on_quit_pressed():
+	get_tree().quit()

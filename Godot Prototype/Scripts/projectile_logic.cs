@@ -11,8 +11,8 @@ public partial class projectile_logic : Area2D
 	float totalMoved;
 	Timer timer;
 
-	PackedScene fizzleParticles;
-	PackedScene hitParticles;
+	PackedScene fizzleParticles = (PackedScene)GD.Load("res://Effects/Explosion_miss.tscn");
+	PackedScene hitParticles = (PackedScene)GD.Load("res://Effects/Explosion_hit.tscn");
 
 	AudioStreamPlayer2D hitSound;
 
@@ -46,9 +46,9 @@ public partial class projectile_logic : Area2D
 	private void _on_Fizzle()
 	{
 		//spawn fizzle particles here
-		//GpuParticles2D fizzle = fizzleParticles.Instantiate<GpuParticles2D>();
-		//GetTree().Root.AddChild(fizzle);
-		//fizzle.GlobalPosition = GlobalPosition;
+		GpuParticles2D fizzle = fizzleParticles.Instantiate<GpuParticles2D>();
+		GetTree().Root.AddChild(fizzle);
+		fizzle.GlobalPosition = GlobalPosition;
 		QueueFree();
 	}
 	private void _on_Hit()
@@ -56,9 +56,9 @@ public partial class projectile_logic : Area2D
 		hitSound.Play();
 		hitSound.GlobalPosition = GlobalPosition;
 		//spawn projectile hit particles here
-		//GpuParticles2D hit = hitParticles.Instantiate<GpuParticles2D>();
-		//GetTree().Root.AddChild(hit);
-		//hit.GlobalPosition = GlobalPosition;
+		GpuParticles2D hit = hitParticles.Instantiate<GpuParticles2D>();
+		GetTree().Root.AddChild(hit);
+		hit.GlobalPosition = GlobalPosition;
 		QueueFree();
 	}
 

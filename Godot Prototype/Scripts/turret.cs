@@ -15,6 +15,8 @@ public partial class turret : Node2D
 	Vector2 CursorPos;
 	float missRadius = 10f;
 
+	AudioStreamPlayer2D shoot;
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -24,6 +26,9 @@ public partial class turret : Node2D
 		timer.WaitTime = rOF;
 		timer.Start();
 		timer.Timeout += () => canFire = true;
+
+		shoot = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(3);
+		shoot.MaxPolyphony = 10;
 	}
 
 	
@@ -56,6 +61,9 @@ public partial class turret : Node2D
 		Sprite2D flare = muzzelFlare[flareIndex].Instantiate<Sprite2D>();
 		GetTree().Root.AddChild(proj);
 		GetTree().Root.AddChild(flare);
+
+		shoot.Play();
+		shoot.GlobalPosition = GlobalPosition;
 
 		flare.GlobalRotation = GetChild<Sprite2D>(1).GlobalRotation;
 		flare.Scale = new(.35f, .35f);

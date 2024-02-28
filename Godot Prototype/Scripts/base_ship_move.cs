@@ -18,9 +18,14 @@ public partial class base_ship_move : Area2D
 	GpuParticles2D thruster4;
 	Area2D Attack_Orbit;
 
-	healthbar healthBar;
+	PackedScene death;
 
-	public float health = 200;
+	AudioStreamPlayer2D explode;
+
+
+	public float health;
+
+	public float maxHealth = 200;
 
 	public override void _Ready()
 	{
@@ -31,9 +36,12 @@ public partial class base_ship_move : Area2D
 		thruster3 = GetChild<Sprite2D>(2).GetChild<Node2D>(3).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 		thruster4 = GetChild<Sprite2D>(2).GetChild<Node2D>(4).GetChild<Node2D>(0).GetChild<GpuParticles2D>(0);
 
+		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(0);
+
 		Attack_Orbit = GetChild<Area2D>(3);
 
 		AreaEntered += (Area2D body) => _on_Hit(body);
+		health = maxHealth;
 
 	}
 
@@ -136,7 +144,6 @@ public partial class base_ship_move : Area2D
 
 		if (body.IsInGroup("enemyprojectilesmall"))
 		{
-			GD.Print("hurt");
 			hurt();
 			body.QueueFree();
 		}
@@ -145,6 +152,13 @@ public partial class base_ship_move : Area2D
 	private void _on_Death()
 	{
 		// spawn explosion particles here
+
+		explode.Play();
+		explode.GlobalPosition = GlobalPosition;
+		GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();
+		GetTree().Root.AddChild(deathExplosion);
+		deathExplosion.GlobalPosition = GlobalPosition;
+		QueueFree();
 		// stop the game loop and display the game over screen
 	}
 }

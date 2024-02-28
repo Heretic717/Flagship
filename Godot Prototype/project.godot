@@ -16,9 +16,14 @@ config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://Audio/default_bus_layout.tres"
+
 [autoload]
 
 UserVariables="*res://Scenes/UserVariables.tscn"
+Sfx="*res://Scenes/sfx.tscn"
 
 [display]
 

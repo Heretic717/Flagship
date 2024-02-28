@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://cu8bma8p6i4wi"]
+[gd_scene load_steps=12 format=3 uid="uid://cu8bma8p6i4wi"]
 
 [ext_resource type="Script" path="res://Scripts/LoadPlayerTemp.cs" id="1_1efal"]
 [ext_resource type="Texture2D" uid="uid://duyjc786q2w5x" path="res://textures/Noise.tres" id="1_b8nva"]
 [ext_resource type="Script" path="res://Scripts/worldStuff.cs" id="1_s2pxe"]
 [ext_resource type="Texture2D" uid="uid://mdrictcnm6qt" path="res://textures/noise_alpha.tres" id="3_7l4vi"]
 [ext_resource type="PackedScene" uid="uid://b4qak4j8pv4dl" path="res://Scenes/reticle.tscn" id="4_hasag"]
-[ext_resource type="PackedScene" uid="uid://bcgbw6asr10nc" path="res://Scenes/healthbar.tscn" id="6_qrecs"]
 
 [sub_resource type="Gradient" id="Gradient_6volx"]
 offsets = PackedFloat32Array(0.028021, 0.0805604)
@@ -100,53 +99,3 @@ script = ExtResource("1_1efal")
 [node name="reticle" parent="." instance=ExtResource("4_hasag")]
 
 [node name="EnemyTimer" type="Timer" parent="."]
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
-
-[node name="Control" type="Control" parent="Camera2D"]
-layout_mode = 3
-anchors_preset = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/Control"]
-layout_mode = 0
-offset_left = -463.0
-offset_top = -253.0
-offset_right = -40.0
-offset_bottom = -183.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/Control/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 6
-
-[node name="Health" type="Label" parent="Camera2D/Control/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
-text = "Health : "
-
-[node name="Healthbar" parent="Camera2D/Control/VBoxContainer/HBoxContainer" instance=ExtResource("6_qrecs")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 3.0
-stretch_margin_left = 4
-stretch_margin_top = 4
-stretch_margin_right = 4
-stretch_margin_bottom = 4
-
-[node name="BoxContainer" type="BoxContainer" parent="Camera2D/Control/VBoxContainer"]
-layout_mode = 2
-
-[node name="Score" type="Label" parent="Camera2D/Control/VBoxContainer/BoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
-text = "Score : "
-
-[node name="ScoreNum" type="Label" parent="Camera2D/Control/VBoxContainer/BoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
-size_flags_stretch_ratio = 3.0
-text = "0"
-horizontal_alignment = 1

@@ -26,6 +26,10 @@ script = ExtResource("1_ft0gf")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_5omwq")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+
 [node name="base_shipGraph" parent="." instance=ExtResource("1_1edq2")]
 
 [node name="thrusterMain" type="Node2D" parent="base_shipGraph"]

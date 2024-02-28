@@ -14,6 +14,8 @@ public partial class projectile_logic : Area2D
 	PackedScene fizzleParticles;
 	PackedScene hitParticles;
 
+	AudioStreamPlayer2D hitSound;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -24,6 +26,7 @@ public partial class projectile_logic : Area2D
 		timer.Timeout += () => _on_Fizzle();
 
 		AreaEntered += (Area2D body) => _on_Hit();
+		hitSound = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(2);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -43,17 +46,19 @@ public partial class projectile_logic : Area2D
 	private void _on_Fizzle()
 	{
 		//spawn fizzle particles here
-		GpuParticles2D fizzle = fizzleParticles.Instantiate<GpuParticles2D>();
-		GetTree().Root.AddChild(fizzle);
-		fizzle.GlobalPosition = GlobalPosition;
+		//GpuParticles2D fizzle = fizzleParticles.Instantiate<GpuParticles2D>();
+		//GetTree().Root.AddChild(fizzle);
+		//fizzle.GlobalPosition = GlobalPosition;
 		QueueFree();
 	}
-	private void _on_Hit() 
+	private void _on_Hit()
 	{
+		hitSound.Play();
+		hitSound.GlobalPosition = GlobalPosition;
 		//spawn projectile hit particles here
-		GpuParticles2D hit = hitParticles.Instantiate<GpuParticles2D>();
-		GetTree().Root.AddChild(hit);
-		hit.GlobalPosition = GlobalPosition;
+		//GpuParticles2D hit = hitParticles.Instantiate<GpuParticles2D>();
+		//GetTree().Root.AddChild(hit);
+		//hit.GlobalPosition = GlobalPosition;
 		QueueFree();
 	}
 

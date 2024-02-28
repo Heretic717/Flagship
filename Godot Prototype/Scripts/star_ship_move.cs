@@ -26,7 +26,7 @@ public partial class star_ship_move : Area2D
 	public float health;
 	public float maxHealth = 200;
 
-	healthbar Healthbar;
+	AudioStreamPlayer2D explode;
 
 
 	public override void _Ready()
@@ -44,9 +44,7 @@ public partial class star_ship_move : Area2D
 
 		AreaEntered += (Area2D body) => _on_Hit(body);
 
-
-		Healthbar.MaxValue = maxHealth;
-		health = maxHealth;
+		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(0);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -202,16 +200,18 @@ public partial class star_ship_move : Area2D
 		{
 			hurt();
 			body.QueueFree();
-			Healthbar.Value = health;
 		}
 	}
 
 	private void _on_Death() 
 	{
 		// spawn explosion particles here
+		explode.Play();
+		explode.GlobalPosition = GlobalPosition;
 		GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();
 		GetTree().Root.AddChild(deathExplosion);
 		deathExplosion.GlobalPosition = GlobalPosition;
+		
 		QueueFree();
 		// stop the game loop and display the game over screen
 	}

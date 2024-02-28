@@ -37,6 +37,8 @@ public partial class enemy_fighter_AI : Area2D
 
 	public State state = State.APPROACH;
 
+	AudioStreamPlayer2D explode;
+
 	private void move(Vector2 target, double delta, Vector2 targetSpeed) 
 	{
 		Vector2 direction = (target - GlobalPosition).Normalized();
@@ -80,6 +82,8 @@ public partial class enemy_fighter_AI : Area2D
 
 		AreaEntered += (Area2D body) => _on_Hit(body);
 		AreaExited += (Area2D body) => _on_Disengage(body);
+
+		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(0);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -182,10 +186,12 @@ public partial class enemy_fighter_AI : Area2D
 	private void _on_Death()
 	{
 		// spawn explosion particles here
-		GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();
-		GetTree().Root.AddChild(deathExplosion);
-		deathExplosion.GlobalPosition = GlobalPosition;
-		QueueFree();
+		
+		explode.Play();
+		explode.GlobalPosition = GlobalPosition;
+		//GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();
+		//GetTree().Root.AddChild(deathExplosion);
+		//deathExplosion.GlobalPosition = GlobalPosition;
 		QueueFree();
 		
 	}

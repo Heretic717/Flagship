@@ -19,6 +19,8 @@ public partial class projectile_logic : Area2D
 		timer.WaitTime = range + GD.RandRange(-.05, .05);
 		timer.Start();
 		timer.Timeout += () => QueueFree();
+
+		AreaEntered += (Area2D body) => _on_Hit();
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -34,4 +36,10 @@ public partial class projectile_logic : Area2D
 	{
 
 	}
+
+	private void _on_Hit() 
+	{
+		//spawn projectile hit particles here
+	}
+
 }

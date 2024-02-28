@@ -196,4 +196,10 @@ public partial class star_ship_move : Area2D
 			body.QueueFree();
 		}
 	}
+
+	private void _on_Death() 
+	{
+		// spawn explosion particles here
+		// stop the game loop and display the game over screen
+	}
 }

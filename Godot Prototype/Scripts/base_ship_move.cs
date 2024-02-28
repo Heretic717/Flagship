@@ -18,6 +18,8 @@ public partial class base_ship_move : Area2D
 	GpuParticles2D thruster4;
 	Area2D Attack_Orbit;
 
+	healthbar healthBar;
+
 	public float health = 200;
 
 	public override void _Ready()
@@ -32,10 +34,16 @@ public partial class base_ship_move : Area2D
 		Attack_Orbit = GetChild<Area2D>(3);
 
 		AreaEntered += (Area2D body) => _on_Hit(body);
+
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
+
+		if (health <= 0) 
+		{
+			_on_Death();
+		}
 		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
 		if (acceleration > accel * 10)
 			acceleration = accel * 10;
@@ -121,7 +129,6 @@ public partial class base_ship_move : Area2D
 	private void hurt()
 	{
 		health -= 1;
-		GD.Print(health);
 	}
 
 	private void _on_Hit(Area2D body)
@@ -133,5 +140,11 @@ public partial class base_ship_move : Area2D
 			hurt();
 			body.QueueFree();
 		}
+	}
+
+	private void _on_Death()
+	{
+		// spawn explosion particles here
+		// stop the game loop and display the game over screen
 	}
 }

@@ -85,7 +85,7 @@ public partial class enemy_fighter_AI : Area2D
 	{
 		collidingBodies = GetOverlappingAreas().Count;
 		if (health <= 0) {
-			QueueFree();
+			_on_Death();
 		}
 		LookAt(player.GlobalPosition);
 		switch (state){
@@ -175,5 +175,11 @@ public partial class enemy_fighter_AI : Area2D
 
 		proj.LookAt(miss);
 		proj.velocity = (miss - GlobalPosition).Normalized() + velocity * new Vector2(.1f, .1f);
+	}
+
+	private void _on_Death()
+	{
+		QueueFree();
+		// spawn explosion particles here
 	}
 }

@@ -18,6 +18,8 @@ public partial class enemy_fighter_AI : Area2D
 	PackedScene[] muzzelFlare = new PackedScene[3] { (PackedScene)GD.Load("res://Scenes/muzzle_flashes_1.tscn"), (PackedScene)GD.Load("res://Scenes/muzzle_flashes_2.tscn"), (PackedScene)GD.Load("res://Scenes/muzzle_flashes_3.tscn") };
 	PackedScene projectile = (PackedScene)GD.Load("res://Scenes/enemy_projectile_small.tscn");
 
+	PackedScene death;
+
 	GpuParticles2D thrusterMain;
 	GpuParticles2D thruster1;
 	GpuParticles2D thruster2;
@@ -179,7 +181,12 @@ public partial class enemy_fighter_AI : Area2D
 
 	private void _on_Death()
 	{
-		QueueFree();
 		// spawn explosion particles here
+		GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();
+		GetTree().Root.AddChild(deathExplosion);
+		deathExplosion.GlobalPosition = GlobalPosition;
+		QueueFree();
+		QueueFree();
+		
 	}
 }

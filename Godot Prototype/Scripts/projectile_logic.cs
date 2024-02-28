@@ -11,6 +11,9 @@ public partial class projectile_logic : Area2D
 	float totalMoved;
 	Timer timer;
 
+	PackedScene fizzleParticles;
+	PackedScene hitParticles;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -18,7 +21,7 @@ public partial class projectile_logic : Area2D
 		timer = GetChild<Timer>(2);
 		timer.WaitTime = range + GD.RandRange(-.05, .05);
 		timer.Start();
-		timer.Timeout += () => QueueFree();
+		timer.Timeout += () => _on_Fizzle();
 
 		AreaEntered += (Area2D body) => _on_Hit();
 	}
@@ -37,9 +40,21 @@ public partial class projectile_logic : Area2D
 
 	}
 
+	private void _on_Fizzle()
+	{
+		//spawn fizzle particles here
+		GpuParticles2D fizzle = fizzleParticles.Instantiate<GpuParticles2D>();
+		GetTree().Root.AddChild(fizzle);
+		fizzle.GlobalPosition = GlobalPosition;
+		QueueFree();
+	}
 	private void _on_Hit() 
 	{
 		//spawn projectile hit particles here
+		GpuParticles2D hit = hitParticles.Instantiate<GpuParticles2D>();
+		GetTree().Root.AddChild(hit);
+		hit.GlobalPosition = GlobalPosition;
+		QueueFree();
 	}
 
 }

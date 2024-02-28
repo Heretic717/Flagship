@@ -21,7 +21,12 @@ public partial class star_ship_move : Area2D
 	GpuParticles2D thruster8;
 	Area2D Attack_Orbit;
 
-	public float health = 200;
+	PackedScene death;
+
+	public float health;
+	public float maxHealth = 200;
+
+	healthbar Healthbar;
 
 
 	public override void _Ready()
@@ -38,6 +43,10 @@ public partial class star_ship_move : Area2D
 		Attack_Orbit = GetChild<Area2D>(3);
 
 		AreaEntered += (Area2D body) => _on_Hit(body);
+
+
+		Healthbar.MaxValue = maxHealth;
+		health = maxHealth;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -191,15 +200,19 @@ public partial class star_ship_move : Area2D
 
 		if (body.IsInGroup("enemyprojectile"))
 		{
-			GD.Print("hurt");
 			hurt();
 			body.QueueFree();
+			Healthbar.Value = health;
 		}
 	}
 
 	private void _on_Death() 
 	{
 		// spawn explosion particles here
+		GpuParticles2D deathExplosion = death.Instantiate<GpuParticles2D>();
+		GetTree().Root.AddChild(deathExplosion);
+		deathExplosion.GlobalPosition = GlobalPosition;
+		QueueFree();
 		// stop the game loop and display the game over screen
 	}
 }

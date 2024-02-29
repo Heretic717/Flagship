@@ -48,11 +48,18 @@ public partial class star_ship_move : Area2D
 
 		explode = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(0);
 		thrust = GetNode("/root/Sfx").GetChild<AudioStreamPlayer2D>(4);
+		
+		health = maxHealth;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+		if (health <= 0) 
+		{
+			_on_Death();
+		}
+		
 		//put a max and min on acceleration to prevent extreme speed or rubberbanding on deceleration
 		if (acceleration > accel * 10)
 			acceleration = accel * 10;
@@ -214,7 +221,7 @@ public partial class star_ship_move : Area2D
 	private void _on_Hit(Area2D body)
 	{
 
-		if (body.IsInGroup("enemyprojectile"))
+		if (body.IsInGroup("enemyprojectilesmall"))
 		{
 			hurt();
 			body.QueueFree();

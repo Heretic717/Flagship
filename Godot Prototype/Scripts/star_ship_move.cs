@@ -72,7 +72,8 @@ public partial class star_ship_move : Area2D
 		// calculate directional speed based on which key was pressed
 		if (Input.IsActionPressed("MovementUp"))
 		{
-			thrust.Play();
+			if (!thrust.Playing)
+				thrust.Play();
 			thrust.GlobalPosition = thruster7.GlobalPosition;
 			thruster7.Emitting = true;
 			thruster6.Emitting = true;
